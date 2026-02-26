@@ -20,6 +20,8 @@
         main { padding: 2rem; max-width: 1200px; margin: auto; }
         .btn { display: inline-block; background: #e67e22; color: #fff; padding: 0.6rem 1.2rem; text-decoration: none; border-radius: 5px; border: none; cursor: pointer; font-size: 1rem; transition: background 0.3s; }
         .btn:hover { background: #d35400; }
+        .btn-outline { background: transparent; border: 1px solid #e67e22; color: #e67e22; }
+        .btn-outline:hover { background: #e67e22; color: #fff; }
         /* Botones flotantes */
         .floating-buttons { position: fixed; bottom: 20px; right: 20px; display: flex; flex-direction: column; gap: 10px; z-index: 1000; }
         .floating-btn { width: 60px; height: 60px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 30px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); cursor: pointer; border: none; transition: transform 0.2s; }
@@ -57,7 +59,7 @@
         .modal-actions { display: flex; justify-content: flex-end; gap: 1rem; }
         .close-modal { background: #95a5a6; }
         .close-modal:hover { background: #7f8c8d; }
-        /* Estilos para la página de inicio */
+        /* Estilos para las secciones de la página de inicio */
         .hero { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; padding: 3rem 2rem; text-align: center; border-radius: 10px; margin-bottom: 2rem; }
         .hero h1 { font-size: 2.5rem; margin-bottom: 1rem; }
         .hero p { font-size: 1.2rem; margin-bottom: 2rem; }
@@ -69,17 +71,20 @@
         .mensaje-card i { font-size: 2.5rem; color: #e67e22; margin-bottom: 1rem; }
         .mensaje-card h3 { margin-bottom: 0.5rem; color: #2c3e50; }
         .mensaje-card p { color: #7f8c8d; }
-        .productos-destacados h2 { text-align: center; margin-bottom: 2rem; color: #2c3e50; position: relative; }
-        .productos-destacados h2:after { content: ''; display: block; width: 50px; height: 3px; background: #e67e22; margin: 0.5rem auto; }
-        .productos-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1.5rem; }
-        .producto-card { background: #fff; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: transform 0.3s; display: flex; flex-direction: column; }
+        .seccion-productos { margin-bottom: 3rem; }
+        .seccion-productos h2 { text-align: center; margin-bottom: 2rem; color: #2c3e50; position: relative; }
+        .seccion-productos h2:after { content: ''; display: block; width: 50px; height: 3px; background: #e67e22; margin: 0.5rem auto; }
+        .productos-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1.5rem; }
+        .producto-card { background: #fff; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: transform 0.3s; display: flex; flex-direction: column; position: relative; }
         .producto-card:hover { transform: translateY(-5px); }
-        .producto-card img { width: 100%; height: 200px; object-fit: cover; }
+        .producto-card img { width: 100%; height: 180px; object-fit: cover; }
+        .producto-card .badge { position: absolute; top: 10px; right: 10px; background: #e67e22; color: #fff; padding: 0.3rem 0.6rem; border-radius: 20px; font-size: 0.8rem; font-weight: bold; }
         .producto-card .info { padding: 1rem; }
-        .producto-card h3 { margin: 0 0 0.5rem; color: #2c3e50; }
+        .producto-card h3 { margin: 0 0 0.5rem; font-size: 1.1rem; color: #2c3e50; }
         .producto-card .precio { font-weight: bold; color: #e67e22; font-size: 1.2rem; margin-bottom: 0.5rem; }
         .producto-card .categoria { color: #7f8c8d; font-size: 0.9rem; margin-bottom: 0.5rem; }
         .producto-card .btn { width: 100%; border-radius: 0; }
+        .ver-mas-container { text-align: center; margin-top: 1rem; }
         /* Responsive */
         @media (max-width: 600px) {
             nav { flex-direction: column; gap: 1rem; }
@@ -132,10 +137,42 @@
             </div>
         </section>
 
-        <section class="productos-destacados">
-            <h2 data-i18n="productosDestacados">Productos destacados</h2>
-            <div id="productos-destacados-container" class="productos-grid">
-                <!-- Se cargará dinámicamente -->
+        <!-- Sección Destacados (aleatorios) -->
+        <section class="seccion-productos" id="seccion-destacados">
+            <h2 data-i18n="destacados">Productos Destacados</h2>
+            <div class="productos-grid" id="destacados-container"></div>
+        </section>
+
+        <!-- Sección Más económicos -->
+        <section class="seccion-productos" id="seccion-economicos">
+            <h2 data-i18n="economicos">Más económicos</h2>
+            <div class="productos-grid" id="economicos-container"></div>
+        </section>
+
+        <!-- Sección Más vendidos -->
+        <section class="seccion-productos" id="seccion-vendidos">
+            <h2 data-i18n="vendidos">Más vendidos 🔥</h2>
+            <div class="productos-grid" id="vendidos-container"></div>
+        </section>
+
+        <!-- Sección Populares -->
+        <section class="seccion-productos" id="seccion-populares">
+            <h2 data-i18n="populares">Populares ⭐</h2>
+            <div class="productos-grid" id="populares-container"></div>
+        </section>
+
+        <!-- Sección Explorar por categorías -->
+        <section class="seccion-productos" id="seccion-categorias">
+            <h2 data-i18n="explorarCategorias">Explora por categorías</h2>
+            <div id="categorias-container"></div>
+        </section>
+
+        <!-- Sección Todos los productos (muestra aleatoria) -->
+        <section class="seccion-productos" id="seccion-todos">
+            <h2 data-i18n="todosProductos">Todos los productos</h2>
+            <div class="productos-grid" id="todos-container"></div>
+            <div class="ver-mas-container">
+                <a href="productos.html" class="btn btn-outline" data-i18n="verTodos">Ver todos los productos</a>
             </div>
         </section>
     </main>
@@ -202,8 +239,20 @@
         translations.en.seguridad = "Secure purchase";
         translations.es.seguridadText = "Pagos protegidos y garantía.";
         translations.en.seguridadText = "Protected payments and warranty.";
-        translations.es.productosDestacados = "Productos destacados";
-        translations.en.productosDestacados = "Featured products";
+        translations.es.destacados = "Productos Destacados";
+        translations.en.destacados = "Featured Products";
+        translations.es.economicos = "Más económicos";
+        translations.en.economicos = "Best Prices";
+        translations.es.vendidos = "Más vendidos 🔥";
+        translations.en.vendidos = "Best Sellers 🔥";
+        translations.es.populares = "Populares ⭐";
+        translations.en.populares = "Popular ⭐";
+        translations.es.explorarCategorias = "Explora por categorías";
+        translations.en.explorarCategorias = "Explore by categories";
+        translations.es.todosProductos = "Todos los productos";
+        translations.en.todosProductos = "All products";
+        translations.es.verTodos = "Ver todos los productos";
+        translations.en.verTodos = "View all products";
 
         // Sobrescribir updateUILanguage para esta página
         function updateUILanguage() {
@@ -217,14 +266,14 @@
             });
             document.getElementById('lang-es').classList.toggle('active', currentLanguage === 'es');
             document.getElementById('lang-en').classList.toggle('active', currentLanguage === 'en');
-            // Recargar productos destacados para actualizar nombres
-            cargarProductosDestacados();
+            // Recargar todas las secciones
+            cargarTodasLasSecciones();
         }
 
         // Inicializar idioma
         setLanguage(currentLanguage);
 
-        // Funciones para el panel del carrito
+        // Funciones para el panel del carrito (igual que antes)
         const cartPanel = document.getElementById('cart-panel');
         const cartFloating = document.getElementById('cart-floating');
         const closePanel = document.querySelector('.close-panel');
@@ -257,7 +306,6 @@
                 return;
             }
 
-            // Necesitamos productosData, pero aquí no los tenemos. Los cargaremos con fetch.
             fetch('productos.json')
                 .then(response => response.json())
                 .then(data => {
@@ -295,7 +343,7 @@
                     </div>`;
                     container.innerHTML = html;
 
-                    // Asignar eventos
+                    // Eventos del panel
                     document.querySelectorAll('.increment-cart').forEach(btn => {
                         btn.addEventListener('click', (e) => {
                             const id = parseInt(e.target.dataset.id);
@@ -334,42 +382,86 @@
                 .catch(err => console.error('Error cargando productos:', err));
         }
 
-        // Función para cargar productos destacados aleatorios
-        function cargarProductosDestacados() {
+        // Función para crear una tarjeta de producto
+        function crearTarjetaProducto(producto, categoriaNombre, badge = null) {
+            const nombreProd = currentLanguage === 'es' ? producto.nombre_es : producto.nombre_en;
+            const catNombre = categoriaNombre || (currentLanguage === 'es' ? producto.categoria?.nombre_es : producto.categoria?.nombre_en) || '';
+            const badgeHtml = badge ? `<span class="badge">${badge}</span>` : '';
+            return `
+                <div class="producto-card">
+                    ${badgeHtml}
+                    <img src="${producto.imagen}" alt="${nombreProd}" onerror="this.src='img/placeholder.jpg'">
+                    <div class="info">
+                        <h3>${nombreProd}</h3>
+                        <p class="categoria">${catNombre}</p>
+                        <p class="precio">${CONFIG.CURRENCY}${producto.precio.toFixed(2)}</p>
+                        <a href="productos.html" class="btn" data-i18n="verMas">Ver más</a>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Función principal para cargar todas las secciones
+        function cargarTodasLasSecciones() {
             fetch('productos.json')
                 .then(response => response.json())
                 .then(data => {
-                    const todosProductos = data.categorias.flatMap(cat => 
+                    const categorias = data.categorias;
+                    const todosProductos = categorias.flatMap(cat => 
                         cat.productos.map(p => ({ ...p, categoria: cat }))
                     );
-                    // Mezclar aleatoriamente y tomar 6
-                    const destacados = todosProductos.sort(() => 0.5 - Math.random()).slice(0, 6);
-                    const container = document.getElementById('productos-destacados-container');
-                    container.innerHTML = '';
-                    destacados.forEach(producto => {
-                        const nombreProd = currentLanguage === 'es' ? producto.nombre_es : producto.nombre_en;
-                        const nombreCat = currentLanguage === 'es' ? producto.categoria.nombre_es : producto.categoria.nombre_en;
-                        const card = document.createElement('div');
-                        card.className = 'producto-card';
-                        card.innerHTML = `
-                            <img src="${producto.imagen}" alt="${nombreProd}" onerror="this.src='img/placeholder.jpg'">
-                            <div class="info">
-                                <h3>${nombreProd}</h3>
-                                <p class="categoria">${nombreCat}</p>
-                                <p class="precio">${CONFIG.CURRENCY}${producto.precio.toFixed(2)}</p>
-                                <a href="productos.html" class="btn" data-i18n="verMas">Ver más</a>
-                            </div>
-                        `;
-                        container.appendChild(card);
+
+                    // 1. Destacados (aleatorios)
+                    const destacados = [...todosProductos].sort(() => 0.5 - Math.random()).slice(0, 6);
+                    document.getElementById('destacados-container').innerHTML = destacados.map(p => 
+                        crearTarjetaProducto(p, currentLanguage === 'es' ? p.categoria.nombre_es : p.categoria.nombre_en)
+                    ).join('');
+
+                    // 2. Más económicos (orden por precio ascendente)
+                    const economicos = [...todosProductos].sort((a, b) => a.precio - b.precio).slice(0, 6);
+                    document.getElementById('economicos-container').innerHTML = economicos.map(p => 
+                        crearTarjetaProducto(p, currentLanguage === 'es' ? p.categoria.nombre_es : p.categoria.nombre_en)
+                    ).join('');
+
+                    // 3. Más vendidos (simulados con badge)
+                    const vendidos = [...todosProductos].sort(() => 0.5 - Math.random()).slice(0, 6);
+                    document.getElementById('vendidos-container').innerHTML = vendidos.map(p => 
+                        crearTarjetaProducto(p, currentLanguage === 'es' ? p.categoria.nombre_es : p.categoria.nombre_en, '🔥')
+                    ).join('');
+
+                    // 4. Populares (simulados con badge)
+                    const populares = [...todosProductos].sort(() => 0.5 - Math.random()).slice(0, 6);
+                    document.getElementById('populares-container').innerHTML = populares.map(p => 
+                        crearTarjetaProducto(p, currentLanguage === 'es' ? p.categoria.nombre_es : p.categoria.nombre_en, '⭐')
+                    ).join('');
+
+                    // 5. Explorar por categorías
+                    const categoriasContainer = document.getElementById('categorias-container');
+                    categoriasContainer.innerHTML = '';
+                    categorias.forEach(categoria => {
+                        const nombreCat = currentLanguage === 'es' ? categoria.nombre_es : categoria.nombre_en;
+                        const productosCat = categoria.productos.slice(0, 2); // Mostrar hasta 2 productos por categoría
+                        const catDiv = document.createElement('div');
+                        catDiv.classList.add('seccion-productos');
+                        catDiv.innerHTML = `<h3>${nombreCat}</h3><div class="productos-grid">${
+                            productosCat.map(p => crearTarjetaProducto(p, nombreCat)).join('')
+                        }</div>`;
+                        categoriasContainer.appendChild(catDiv);
                     });
+
+                    // 6. Todos los productos (aleatorios 12)
+                    const todos = [...todosProductos].sort(() => 0.5 - Math.random()).slice(0, 12);
+                    document.getElementById('todos-container').innerHTML = todos.map(p => 
+                        crearTarjetaProducto(p, currentLanguage === 'es' ? p.categoria.nombre_es : p.categoria.nombre_en)
+                    ).join('');
                 })
-                .catch(err => console.error('Error cargando productos destacados:', err));
+                .catch(err => console.error('Error cargando productos:', err));
         }
 
-        cargarProductosDestacados();
+        cargarTodasLasSecciones();
         actualizarContadorCarrito();
 
-        // Modal WhatsApp
+        // Modal WhatsApp (igual que antes)
         const modal = document.getElementById('whatsapp-modal');
         const floatingWhatsApp = document.getElementById('whatsapp-floating');
         const closeModal = document.querySelector('.close-modal');
