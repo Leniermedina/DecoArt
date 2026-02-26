@@ -1,0 +1,44 @@
+{
+    "categorias": [
+        {
+            "nombre_es": "Electrónica",
+            "nombre_en": "Electronics",
+            "productos": [
+                {
+                    "id": 1,
+                    "nombre_es": "Auriculares Bluetooth",
+                    "nombre_en": "Bluetooth Headphones",
+                    "precio": 29.99,
+                    "imagen": "img/auriculares.jpg"
+                },
+                {
+                    "id": 2,
+                    "nombre_es": "Cargador Portátil",
+                    "nombre_en": "Power Bank",
+                    "precio": 19.99,
+                    "imagen": "img/cargador.jpg"
+                }
+            ]
+        },
+        {
+            "nombre_es": "Hogar",
+            "nombre_en": "Home",
+            "productos": [
+                {
+                    "id": 3,
+                    "nombre_es": "Lámpara LED",
+                    "nombre_en": "LED Lamp",
+                    "precio": 15.50,
+                    "imagen": "img/lampara.jpg"
+                },
+                {
+                    "id": 4,
+                    "nombre_es": "Set de Ollas",
+                    "nombre_en": "Pot Set",
+                    "precio": 45.00,
+                    "imagen": "img/ollas.jpg"
+                }
+            ]
+        }
+    ]
+}
