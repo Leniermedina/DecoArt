@@ -9,26 +9,28 @@
     <style>
         /* ========== ESTILOS GLOBALES ========== */
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: Arial, sans-serif; line-height: 1.6; padding-bottom: 60px; background-color: #f9f9f9; }
-        header { background: #333; color: #fff; padding: 1rem; position: sticky; top: 0; z-index: 1000; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; padding-bottom: 60px; background-color: #f4f4f4; color: #333; }
+        header { background: #2c3e50; color: #fff; padding: 1rem; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         nav { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; }
-        .nav-links a { color: #fff; text-decoration: none; margin: 0 0.5rem; padding: 0.5rem; }
-        .nav-links a:hover { background: #555; border-radius: 4px; }
-        .idioma button { background: none; border: 1px solid #fff; color: #fff; padding: 0.3rem 0.6rem; margin: 0 0.2rem; cursor: pointer; border-radius: 4px; font-size: 1.2rem; }
-        .idioma button.active { background: #fff; color: #333; }
+        .logo { font-size: 1.5rem; font-weight: bold; color: #fff; }
+        .nav-links a { color: #fff; text-decoration: none; margin: 0 0.5rem; padding: 0.5rem; border-radius: 4px; transition: background 0.3s; }
+        .nav-links a:hover { background: #34495e; }
+        .idioma button { background: none; border: 1px solid #fff; color: #fff; padding: 0.3rem 0.6rem; margin: 0 0.2rem; cursor: pointer; border-radius: 4px; font-size: 1.2rem; transition: all 0.3s; }
+        .idioma button.active { background: #fff; color: #2c3e50; }
         main { padding: 2rem; max-width: 1200px; margin: auto; }
-        .btn { display: inline-block; background: #28a745; color: #fff; padding: 0.6rem 1.2rem; text-decoration: none; border-radius: 5px; border: none; cursor: pointer; font-size: 1rem; }
-        .btn:hover { background: #218838; }
+        .btn { display: inline-block; background: #e67e22; color: #fff; padding: 0.6rem 1.2rem; text-decoration: none; border-radius: 5px; border: none; cursor: pointer; font-size: 1rem; transition: background 0.3s; }
+        .btn:hover { background: #d35400; }
         /* Botones flotantes */
         .floating-buttons { position: fixed; bottom: 20px; right: 20px; display: flex; flex-direction: column; gap: 10px; z-index: 1000; }
-        .floating-btn { width: 60px; height: 60px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 30px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); cursor: pointer; border: none; }
+        .floating-btn { width: 60px; height: 60px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 30px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); cursor: pointer; border: none; transition: transform 0.2s; }
+        .floating-btn:hover { transform: scale(1.1); }
         .floating-btn.cart { background: #ff6600; color: white; }
         .floating-btn.whatsapp { background: #25D366; color: white; }
         .floating-btn .cart-count { position: absolute; top: 0; right: 0; background: red; color: white; border-radius: 50%; padding: 2px 6px; font-size: 0.8rem; }
         /* Panel lateral del carrito */
-        .cart-panel { position: fixed; top: 0; right: -400px; width: 100%; max-width: 400px; height: 100%; background: #fff; box-shadow: -2px 0 5px rgba(0,0,0,0.2); transition: right 0.3s ease; z-index: 2000; display: flex; flex-direction: column; }
+        .cart-panel { position: fixed; top: 0; right: -400px; width: 100%; max-width: 400px; height: 100%; background: #fff; box-shadow: -2px 0 10px rgba(0,0,0,0.2); transition: right 0.3s ease; z-index: 2000; display: flex; flex-direction: column; }
         .cart-panel.open { right: 0; }
-        .cart-panel-header { display: flex; justify-content: space-between; align-items: center; padding: 1rem; background: #333; color: #fff; }
+        .cart-panel-header { display: flex; justify-content: space-between; align-items: center; padding: 1rem; background: #2c3e50; color: #fff; }
         .cart-panel-header h2 { margin: 0; font-size: 1.2rem; }
         .cart-panel-header .close-panel { background: none; border: none; color: #fff; font-size: 2rem; cursor: pointer; }
         .cart-panel-content { flex: 1; overflow-y: auto; padding: 1rem; }
@@ -36,28 +38,55 @@
         .cart-item { display: flex; align-items: center; gap: 1rem; padding: 1rem 0; border-bottom: 1px solid #ddd; }
         .cart-item img { width: 50px; height: 50px; object-fit: cover; border-radius: 4px; }
         .cart-item-details { flex: 1; }
-        .cart-item-details h4 { margin: 0 0 0.5rem; }
-        .cart-item-details .precio { font-weight: bold; color: #28a745; }
+        .cart-item-details h4 { margin: 0 0 0.5rem; font-size: 0.9rem; }
+        .cart-item-details .precio { font-weight: bold; color: #e67e22; }
         .cart-item-controls { display: flex; align-items: center; gap: 0.5rem; }
-        .cart-item-controls button { width: 30px; height: 30px; background: #ddd; border: none; border-radius: 4px; cursor: pointer; }
+        .cart-item-controls button { width: 30px; height: 30px; background: #ddd; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        .cart-item-controls button:hover { background: #ccc; }
         .cart-item-controls span { min-width: 30px; text-align: center; }
-        .remove-item { background: #dc3545; color: #fff; border: none; padding: 0.3rem 0.6rem; border-radius: 4px; cursor: pointer; }
+        .remove-item { background: #e74c3c; color: #fff; border: none; padding: 0.3rem 0.6rem; border-radius: 4px; cursor: pointer; font-size: 0.8rem; }
+        .remove-item:hover { background: #c0392b; }
         .cart-total { font-size: 1.2rem; font-weight: bold; text-align: right; margin: 1rem 0; }
         .cart-actions { display: flex; gap: 1rem; justify-content: flex-end; flex-wrap: wrap; }
         .empty-cart { text-align: center; padding: 2rem; }
-        /* Modal WhatsApp (igual) */
+        /* Modal WhatsApp */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 3000; }
-        .modal-content { background: #fff; padding: 2rem; border-radius: 8px; max-width: 400px; width: 90%; }
-        .modal-content h3 { margin-bottom: 1rem; }
+        .modal-content { background: #fff; padding: 2rem; border-radius: 8px; max-width: 400px; width: 90%; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+        .modal-content h3 { margin-bottom: 1rem; color: #2c3e50; }
         .modal-content input { width: 100%; padding: 0.5rem; margin-bottom: 1rem; border: 1px solid #ddd; border-radius: 4px; }
         .modal-actions { display: flex; justify-content: flex-end; gap: 1rem; }
-        .close-modal { background: #ccc; }
+        .close-modal { background: #95a5a6; }
+        .close-modal:hover { background: #7f8c8d; }
+        /* Estilos para la página de inicio */
+        .hero { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; padding: 3rem 2rem; text-align: center; border-radius: 10px; margin-bottom: 2rem; }
+        .hero h1 { font-size: 2.5rem; margin-bottom: 1rem; }
+        .hero p { font-size: 1.2rem; margin-bottom: 2rem; }
+        .hero .btn { background: #fff; color: #667eea; font-size: 1.1rem; }
+        .hero .btn:hover { background: #f0f0f0; }
+        .mensajes-motivadores { display: flex; justify-content: space-around; flex-wrap: wrap; gap: 1rem; margin-bottom: 3rem; }
+        .mensaje-card { background: #fff; padding: 1.5rem; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); flex: 1 1 200px; text-align: center; transition: transform 0.3s; }
+        .mensaje-card:hover { transform: translateY(-5px); }
+        .mensaje-card i { font-size: 2.5rem; color: #e67e22; margin-bottom: 1rem; }
+        .mensaje-card h3 { margin-bottom: 0.5rem; color: #2c3e50; }
+        .mensaje-card p { color: #7f8c8d; }
+        .productos-destacados h2 { text-align: center; margin-bottom: 2rem; color: #2c3e50; position: relative; }
+        .productos-destacados h2:after { content: ''; display: block; width: 50px; height: 3px; background: #e67e22; margin: 0.5rem auto; }
+        .productos-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1.5rem; }
+        .producto-card { background: #fff; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: transform 0.3s; display: flex; flex-direction: column; }
+        .producto-card:hover { transform: translateY(-5px); }
+        .producto-card img { width: 100%; height: 200px; object-fit: cover; }
+        .producto-card .info { padding: 1rem; }
+        .producto-card h3 { margin: 0 0 0.5rem; color: #2c3e50; }
+        .producto-card .precio { font-weight: bold; color: #e67e22; font-size: 1.2rem; margin-bottom: 0.5rem; }
+        .producto-card .categoria { color: #7f8c8d; font-size: 0.9rem; margin-bottom: 0.5rem; }
+        .producto-card .btn { width: 100%; border-radius: 0; }
         /* Responsive */
         @media (max-width: 600px) {
             nav { flex-direction: column; gap: 1rem; }
             .nav-links { display: flex; flex-wrap: wrap; justify-content: center; }
             main { padding: 1rem; }
             .cart-panel { max-width: 100%; }
+            .hero h1 { font-size: 1.8rem; }
         }
     </style>
 </head>
@@ -81,8 +110,33 @@
     <main>
         <section class="hero">
             <h1 data-i18n="welcome">Bienvenido a DecoArt</h1>
-            <p data-i18n="welcomeText">Encuentra los mejores productos para decorar tu hogar.</p>
+            <p data-i18n="welcomeText">Transformamos tus espacios con estilo y calidad.</p>
             <a href="productos.html" class="btn" data-i18n="verProductos">Ver productos</a>
+        </section>
+
+        <section class="mensajes-motivadores">
+            <div class="mensaje-card">
+                <i class="fas fa-star"></i>
+                <h3 data-i18n="mejorOpcion">Somos tu mejor opción</h3>
+                <p data-i18n="mejorOpcionText">Calidad y variedad para tu hogar.</p>
+            </div>
+            <div class="mensaje-card">
+                <i class="fas fa-truck"></i>
+                <h3 data-i18n="entregaRapida">Entrega rápida</h3>
+                <p data-i18n="entregaRapidaText">Recibe tu pedido el mismo día.</p>
+            </div>
+            <div class="mensaje-card">
+                <i class="fas fa-shield-alt"></i>
+                <h3 data-i18n="seguridad">Compra segura</h3>
+                <p data-i18n="seguridadText">Pagos protegidos y garantía.</p>
+            </div>
+        </section>
+
+        <section class="productos-destacados">
+            <h2 data-i18n="productosDestacados">Productos destacados</h2>
+            <div id="productos-destacados-container" class="productos-grid">
+                <!-- Se cargará dinámicamente -->
+            </div>
         </section>
     </main>
 
@@ -132,10 +186,24 @@
         // Traducciones adicionales para esta página
         translations.es.welcome = "Bienvenido a DecoArt";
         translations.en.welcome = "Welcome to DecoArt";
-        translations.es.welcomeText = "Encuentra los mejores productos para decorar tu hogar.";
-        translations.en.welcomeText = "Find the best products to decorate your home.";
+        translations.es.welcomeText = "Transformamos tus espacios con estilo y calidad.";
+        translations.en.welcomeText = "We transform your spaces with style and quality.";
         translations.es.verProductos = "Ver productos";
         translations.en.verProductos = "View products";
+        translations.es.mejorOpcion = "Somos tu mejor opción";
+        translations.en.mejorOpcion = "We are your best choice";
+        translations.es.mejorOpcionText = "Calidad y variedad para tu hogar.";
+        translations.en.mejorOpcionText = "Quality and variety for your home.";
+        translations.es.entregaRapida = "Entrega rápida";
+        translations.en.entregaRapida = "Fast delivery";
+        translations.es.entregaRapidaText = "Recibe tu pedido el mismo día.";
+        translations.en.entregaRapidaText = "Receive your order the same day.";
+        translations.es.seguridad = "Compra segura";
+        translations.en.seguridad = "Secure purchase";
+        translations.es.seguridadText = "Pagos protegidos y garantía.";
+        translations.en.seguridadText = "Protected payments and warranty.";
+        translations.es.productosDestacados = "Productos destacados";
+        translations.en.productosDestacados = "Featured products";
 
         // Sobrescribir updateUILanguage para esta página
         function updateUILanguage() {
@@ -149,6 +217,8 @@
             });
             document.getElementById('lang-es').classList.toggle('active', currentLanguage === 'es');
             document.getElementById('lang-en').classList.toggle('active', currentLanguage === 'en');
+            // Recargar productos destacados para actualizar nombres
+            cargarProductosDestacados();
         }
 
         // Inicializar idioma
@@ -161,7 +231,7 @@
 
         function openCartPanel() {
             cartPanel.classList.add('open');
-            renderCartPanel(); // Función definida abajo
+            renderCartPanel();
         }
 
         function closeCartPanel() {
@@ -171,7 +241,6 @@
         cartFloating.addEventListener('click', openCartPanel);
         closePanel.addEventListener('click', closeCartPanel);
 
-        // Cerrar panel al hacer clic fuera (opcional)
         window.addEventListener('click', (e) => {
             if (!cartPanel.contains(e.target) && !cartFloating.contains(e.target) && cartPanel.classList.contains('open')) {
                 closeCartPanel();
@@ -265,10 +334,42 @@
                 .catch(err => console.error('Error cargando productos:', err));
         }
 
-        // Actualizar contador en el botón flotante
+        // Función para cargar productos destacados aleatorios
+        function cargarProductosDestacados() {
+            fetch('productos.json')
+                .then(response => response.json())
+                .then(data => {
+                    const todosProductos = data.categorias.flatMap(cat => 
+                        cat.productos.map(p => ({ ...p, categoria: cat }))
+                    );
+                    // Mezclar aleatoriamente y tomar 6
+                    const destacados = todosProductos.sort(() => 0.5 - Math.random()).slice(0, 6);
+                    const container = document.getElementById('productos-destacados-container');
+                    container.innerHTML = '';
+                    destacados.forEach(producto => {
+                        const nombreProd = currentLanguage === 'es' ? producto.nombre_es : producto.nombre_en;
+                        const nombreCat = currentLanguage === 'es' ? producto.categoria.nombre_es : producto.categoria.nombre_en;
+                        const card = document.createElement('div');
+                        card.className = 'producto-card';
+                        card.innerHTML = `
+                            <img src="${producto.imagen}" alt="${nombreProd}" onerror="this.src='img/placeholder.jpg'">
+                            <div class="info">
+                                <h3>${nombreProd}</h3>
+                                <p class="categoria">${nombreCat}</p>
+                                <p class="precio">${CONFIG.CURRENCY}${producto.precio.toFixed(2)}</p>
+                                <a href="productos.html" class="btn" data-i18n="verMas">Ver más</a>
+                            </div>
+                        `;
+                        container.appendChild(card);
+                    });
+                })
+                .catch(err => console.error('Error cargando productos destacados:', err));
+        }
+
+        cargarProductosDestacados();
         actualizarContadorCarrito();
 
-        // Modal WhatsApp (igual que antes)
+        // Modal WhatsApp
         const modal = document.getElementById('whatsapp-modal');
         const floatingWhatsApp = document.getElementById('whatsapp-floating');
         const closeModal = document.querySelector('.close-modal');
