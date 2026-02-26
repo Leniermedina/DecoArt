@@ -1,268 +1,3 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DecoArt - Acerca de</title>
-    <link rel="icon" href="favicon.ico">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        /* Mismos estilos globales */
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: Arial, sans-serif; line-height: 1.6; padding-bottom: 60px; background-color: #f9f9f9; }
-        header { background: #333; color: #fff; padding: 1rem; position: sticky; top: 0; z-index: 1000; }
-        nav { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; }
-        .nav-links a { color: #fff; text-decoration: none; margin: 0 0.5rem; padding: 0.5rem; }
-        .nav-links a:hover { background: #555; border-radius: 4px; }
-        .idioma button { background: none; border: 1px solid #fff; color: #fff; padding: 0.3rem 0.6rem; margin: 0 0.2rem; cursor: pointer; border-radius: 4px; font-size: 1.2rem; }
-        .idioma button.active { background: #fff; color: #333; }
-        main { padding: 2rem; max-width: 800px; margin: auto; }
-        .btn { display: inline-block; background: #28a745; color: #fff; padding: 0.6rem 1.2rem; text-decoration: none; border-radius: 5px; border: none; cursor: pointer; font-size: 1rem; }
-        .btn:hover { background: #218838; }
-        .floating-buttons { position: fixed; bottom: 20px; right: 20px; display: flex; flex-direction: column; gap: 10px; z-index: 1000; }
-        .floating-btn { width: 60px; height: 60px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 30px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); cursor: pointer; border: none; }
-        .floating-btn.cart { background: #ff6600; color: white; }
-        .floating-btn.whatsapp { background: #25D366; color: white; }
-        .floating-btn .cart-count { position: absolute; top: 0; right: 0; background: red; color: white; border-radius: 50%; padding: 2px 6px; font-size: 0.8rem; }
-        .cart-panel { position: fixed; top: 0; right: -400px; width: 100%; max-width: 400px; height: 100%; background: #fff; box-shadow: -2px 0 5px rgba(0,0,0,0.2); transition: right 0.3s ease; z-index: 2000; display: flex; flex-direction: column; }
-        .cart-panel.open { right: 0; }
-        .cart-panel-header { display: flex; justify-content: space-between; align-items: center; padding: 1rem; background: #333; color: #fff; }
-        .cart-panel-header h2 { margin: 0; font-size: 1.2rem; }
-        .cart-panel-header .close-panel { background: none; border: none; color: #fff; font-size: 2rem; cursor: pointer; }
-        .cart-panel-content { flex: 1; overflow-y: auto; padding: 1rem; }
-        .cart-item { display: flex; align-items: center; gap: 1rem; padding: 1rem 0; border-bottom: 1px solid #ddd; }
-        .cart-item img { width: 50px; height: 50px; object-fit: cover; border-radius: 4px; }
-        .cart-item-details { flex: 1; }
-        .cart-item-details h4 { margin: 0 0 0.5rem; }
-        .cart-item-details .precio { font-weight: bold; color: #28a745; }
-        .cart-item-controls { display: flex; align-items: center; gap: 0.5rem; }
-        .cart-item-controls button { width: 30px; height: 30px; background: #ddd; border: none; border-radius: 4px; cursor: pointer; }
-        .cart-item-controls span { min-width: 30px; text-align: center; }
-        .remove-item { background: #dc3545; color: #fff; border: none; padding: 0.3rem 0.6rem; border-radius: 4px; cursor: pointer; }
-        .cart-total { font-size: 1.2rem; font-weight: bold; text-align: right; margin: 1rem 0; }
-        .cart-actions { display: flex; gap: 1rem; justify-content: flex-end; flex-wrap: wrap; }
-        .empty-cart { text-align: center; padding: 2rem; }
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 3000; }
-        .modal-content { background: #fff; padding: 2rem; border-radius: 8px; max-width: 400px; width: 90%; }
-        .modal-content h3 { margin-bottom: 1rem; }
-        .modal-content input { width: 100%; padding: 0.5rem; margin-bottom: 1rem; border: 1px solid #ddd; border-radius: 4px; }
-        .modal-actions { display: flex; justify-content: flex-end; gap: 1rem; }
-        .close-modal { background: #ccc; }
-        .contact-info { background: #fff; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .contact-info p { margin: 1rem 0; font-size: 1.1rem; }
-        .contact-info i { width: 30px; color: #28a745; }
-        @media (max-width: 600px) {
-            nav { flex-direction: column; gap: 1rem; }
-            .nav-links { display: flex; flex-wrap: wrap; justify-content: center; }
-            main { padding: 1rem; }
-            .cart-panel { max-width: 100%; }
-        }
-    </style>
-</head>
-<body>
-    <header>
-        <nav>
-            <div class="logo">🛒 DecoArt</div>
-            <div class="nav-links">
-                <a href="index.html" data-i18n="inicio">Inicio</a>
-                <a href="productos.html" data-i18n="productos">Productos</a>
-                <a href="carrito.html" data-i18n="carrito">Carrito</a>
-                <a href="acerca.html" data-i18n="acerca">Acerca de</a>
-            </div>
-            <div class="idioma">
-                <button onclick="setLanguage('es')" id="lang-es">🇪🇸</button>
-                <button onclick="setLanguage('en')" id="lang-en">🇺🇸</button>
-            </div>
-        </nav>
-    </header>
-
-    <main>
-        <h1 data-i18n="contacto">Información de contacto</h1>
-        <div class="contact-info">
-            <p><i class="fas fa-envelope"></i> <strong data-i18n="email">Correo electrónico:</strong> decoart@ejemplo.com</p>
-            <p><i class="fas fa-phone"></i> <strong data-i18n="telefonoContacto">Teléfono:</strong> +56 9 1234 5678</p>
-            <p><i class="fas fa-clock"></i> <strong data-i18n="horario">Horario de atención:</strong> Lunes a Viernes 9:00 - 18:00</p>
-            <p><i class="fab fa-whatsapp"></i> <strong>WhatsApp:</strong> <a href="#" id="whatsapp-link">+53 6320 0804</a> (haz clic para pedidos)</p>
-        </div>
-    </main>
-
-    <!-- Botones flotantes -->
-    <div class="floating-buttons">
-        <div class="floating-btn cart" id="cart-floating">
-            <i class="fas fa-shopping-cart"></i>
-            <span class="cart-count">0</span>
-        </div>
-        <div class="floating-btn whatsapp" id="whatsapp-floating">
-            <i class="fab fa-whatsapp"></i>
-        </div>
-    </div>
-
-    <!-- Panel lateral del carrito -->
-    <aside id="cart-panel" class="cart-panel">
-        <div class="cart-panel-header">
-            <h2 data-i18n="tuCarrito">Tu Carrito</h2>
-            <button class="close-panel">&times;</button>
-        </div>
-        <div class="cart-panel-content" id="cart-panel-content">
-            <!-- Contenido dinámico -->
-        </div>
-    </aside>
-
-    <!-- Modal WhatsApp -->
-    <div id="whatsapp-modal" class="modal">
-        <div class="modal-content">
-            <h3 data-i18n="enviarPedido">Enviar pedido por WhatsApp</h3>
-            <form id="whatsapp-form">
-                <input type="text" id="nombre" placeholder="Nombre" data-i18n-placeholder="nombre" required>
-                <input type="text" id="apellidos" placeholder="Apellidos" data-i18n-placeholder="apellidos" required>
-                <input type="tel" id="telefono" placeholder="Teléfono" data-i18n-placeholder="telefono" required>
-                <input type="text" id="direccion" placeholder="Dirección" data-i18n-placeholder="direccion" required>
-                <div class="modal-actions">
-                    <button type="button" class="btn close-modal" data-i18n="cerrar">Cerrar</button>
-                    <button type="submit" class="btn" data-i18n="enviar">Enviar</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <script src="js/config.js"></script>
-    <script src="js/i18n.js"></script>
-    <script src="js/carrito.js"></script>
-    <script>
-        // Traducciones adicionales
-        translations.es.contacto = "Información de contacto";
-        translations.en.contacto = "Contact information";
-        translations.es.email = "Correo electrónico:";
-        translations.en.email = "Email:";
-        translations.es.telefonoContacto = "Teléfono:";
-        translations.en.telefonoContacto = "Phone:";
-        translations.es.horario = "Horario de atención:";
-        translations.en.horario = "Opening hours:";
-
-        function updateUILanguage() {
-            document.querySelectorAll('[data-i18n]').forEach(el => {
-                const key = el.getAttribute('data-i18n');
-                el.textContent = t(key);
-            });
-            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
-                const key = el.getAttribute('data-i18n-placeholder');
-                el.placeholder = t(key);
-            });
-            document.getElementById('lang-es').classList.toggle('active', currentLanguage === 'es');
-            document.getElementById('lang-en').classList.toggle('active', currentLanguage === 'en');
-        }
-
-        setLanguage(currentLanguage);
-
-        // Panel del carrito (mismas funciones)
-        const cartPanel = document.getElementById('cart-panel');
-        const cartFloating = document.getElementById('cart-floating');
-        const closePanel = document.querySelector('.close-panel');
-
-        function openCartPanel() {
-            cartPanel.classList.add('open');
-            renderCartPanel();
-        }
-
-        function closeCartPanel() {
-            cartPanel.classList.remove('open');
-        }
-
-        cartFloating.addEventListener('click', openCartPanel);
-        closePanel.addEventListener('click', closeCartPanel);
-
-        window.addEventListener('click', (e) => {
-            if (!cartPanel.contains(e.target) && !cartFloating.contains(e.target) && cartPanel.classList.contains('open')) {
-                closeCartPanel();
-            }
-        });
-
-        function renderCartPanel() {
-            const container = document.getElementById('cart-panel-content');
-            const cart = getCart();
-
-            if (cart.length === 0) {
-                container.innerHTML = `<div class="empty-cart"><p data-i18n="carritoVacio">${t('carritoVacio')}</p><a href="productos.html" class="btn" data-i18n="seguirComprando">${t('seguirComprando')}</a></div>`;
-                return;
-            }
-
-            fetch('productos.json')
-                .then(response => response.json())
-                .then(data => {
-                    const productos = data.categorias.flatMap(cat => cat.productos);
-                    let html = '';
-                    let totalGeneral = 0;
-                    cart.forEach(item => {
-                        const prod = productos.find(p => p.id === item.id);
-                        if (!prod) return;
-                        const nombreProd = currentLanguage === 'es' ? prod.nombre_es : prod.nombre_en;
-                        const subtotal = prod.precio * item.cantidad;
-                        totalGeneral += subtotal;
-
-                        html += `
-                            <div class="cart-item" data-id="${item.id}">
-                                <img src="${prod.imagen}" alt="${nombreProd}" onerror="this.src='img/placeholder.jpg'">
-                                <div class="cart-item-details">
-                                    <h4>${nombreProd}</h4>
-                                    <p class="precio">${CONFIG.CURRENCY}${prod.precio.toFixed(2)}</p>
-                                </div>
-                                <div class="cart-item-controls">
-                                    <button class="decrement-cart" data-id="${item.id}">-</button>
-                                    <span>${item.cantidad}</span>
-                                    <button class="increment-cart" data-id="${item.id}">+</button>
-                                </div>
-                                <button class="remove-item" data-id="${item.id}">${t('remove')}</button>
-                            </div>
-                        `;
-                    });
-                    html += `<div class="cart-total">${t('total')}: ${CONFIG.CURRENCY}${totalGeneral.toFixed(2)}</div>`;
-                    html += `<div class="cart-actions">
-                        <a href="productos.html" class="btn" data-i18n="seguirComprando">${t('seguirComprando')}</a>
-                        <button class="btn btn-danger" id="vaciar-carrito-panel" data-i18n="vaciarCarrito">${t('vaciarCarrito')}</button>
-                        <button class="btn" id="enviar-whatsapp-panel" data-i18n="enviarPedido">${t('enviarPedido')}</button>
-                    </div>`;
-                    container.innerHTML = html;
-
-                    document.querySelectorAll('.increment-cart').forEach(btn => {
-                        btn.addEventListener('click', (e) => {
-                            const id = parseInt(e.target.dataset.id);
-                            const item = cart.find(i => i.id === id);
-                            actualizarCantidad(id, item.cantidad + 1);
-                            renderCartPanel();
-                        });
-                    });
-                    document.querySelectorAll('.decrement-cart').forEach(btn => {
-                        btn.addEventListener('click', (e) => {
-                            const id = parseInt(e.target.dataset.id);
-                            const item = cart.find(i => i.id === id);
-                            if (item.cantidad > 1) {
-                                actualizarCantidad(id, item.cantidad - 1);
-                            } else {
-                                eliminarDelCarrito(id);
-                            }
-                            renderCartPanel();
-                        });
-                    });
-                    document.querySelectorAll('.remove-item').forEach(btn => {
-                        btn.addEventListener('click', (e) => {
-                            const id = parseInt(e.target.dataset.id);
-                            eliminarDelCarrito(id);
-                            renderCartPanel();
-                        });
-                    });
-                    document.getElementById('vaciar-carrito-panel')?.addEventListener('click', () => {
-                        vaciarCarrito();
-                        renderCartPanel();
-                    });
-                    document.getElementById('enviar-whatsapp-panel')?.addEventListener('click', () => {
-                        document.getElementById('whatsapp-modal').style.display = 'flex';
-                    });
-                })
-                .catch(err => console.error('Error cargando productos:', err));
-        }
-
-        actualizarContadorCarrito();
-
         // Modal WhatsApp
         const modal = document.getElementById('whatsapp-modal');
         const floatingWhatsApp = document.getElementById('whatsapp-floating');
@@ -288,8 +23,9 @@
             modal.style.display = 'flex';
         });
 
-        document.getElementById('whatsapp-form').addEventListener('submit', (e) => {
+        document.getElementById('whatsapp-form').addEventListener('submit', async (e) => {
             e.preventDefault();
+
             const nombre = document.getElementById('nombre').value.trim();
             const apellidos = document.getElementById('apellidos').value.trim();
             const telefono = document.getElementById('telefono').value.trim();
@@ -306,36 +42,72 @@
                 return;
             }
 
-            fetch('productos.json')
-                .then(response => response.json())
-                .then(data => {
-                    const productos = data.categorias.flatMap(cat => cat.productos);
-                    let mensaje = `Buenos días, quiero hacer este pedido:\n`;
-                    mensaje += `Mi nombre es ${nombre} ${apellidos}.\n`;
-                    mensaje += `Mi número es ${telefono}.\n`;
-                    mensaje += `Mi dirección es ${direccion}.\n\n`;
-                    mensaje += `Pedido:\n`;
-                    let total = 0;
-                    cart.forEach(item => {
-                        const prod = productos.find(p => p.id === item.id);
-                        if (prod) {
-                            const nombreProd = currentLanguage === 'es' ? prod.nombre_es : prod.nombre_en;
-                            const subtotal = prod.precio * item.cantidad;
-                            mensaje += `- ${item.cantidad} x ${nombreProd} (${CONFIG.CURRENCY}${subtotal.toFixed(2)})\n`;
-                            total += subtotal;
-                        }
-                    });
-                    mensaje += `Total: ${CONFIG.CURRENCY}${total.toFixed(2)}`;
+            try {
+                // Cargar productos.json
+                const response = await fetch('productos.json');
+                const data = await response.json();
+                const productos = data.categorias.flatMap(cat => cat.productos);
 
-                    const url = `https://wa.me/${CONFIG.WHATSAPP_NUMBER}?text=${encodeURIComponent(mensaje)}`;
-                    window.open(url, '_blank');
-                    modal.style.display = 'none';
-                })
-                .catch(err => {
-                    console.error('Error cargando productos', err);
-                    alert('Error al preparar el pedido. Intente más tarde.');
+                let mensajeWhatsApp = `Buenos días, quiero hacer este pedido:\n`;
+                mensajeWhatsApp += `Mi nombre es ${nombre} ${apellidos}.\n`;
+                mensajeWhatsApp += `Mi número es ${telefono}.\n`;
+                mensajeWhatsApp += `Mi dirección es ${direccion}.\n\n`;
+                mensajeWhatsApp += `Pedido:\n`;
+
+                const pedidoDetalle = [];
+                let total = 0;
+
+                cart.forEach(item => {
+                    const prod = productos.find(p => p.id === item.id);
+                    if (prod) {
+                        const nombreProd = currentLanguage === 'es' ? prod.nombre_es : prod.nombre_en;
+                        const subtotal = prod.precio * item.cantidad;
+                        mensajeWhatsApp += `- ${item.cantidad} x ${nombreProd} (${CONFIG.CURRENCY}${subtotal.toFixed(2)})\n`;
+                        total += subtotal;
+
+                        pedidoDetalle.push({
+                            cantidad: item.cantidad,
+                            nombre: nombreProd,
+                            precio: `${CONFIG.CURRENCY}${prod.precio.toFixed(2)}`,
+                            subtotal: `${CONFIG.CURRENCY}${subtotal.toFixed(2)}`
+                        });
+                    }
                 });
+
+                mensajeWhatsApp += `Total: ${CONFIG.CURRENCY}${total.toFixed(2)}`;
+                const totalFormateado = `${CONFIG.CURRENCY}${total.toFixed(2)}`;
+
+                const urlWhatsApp = `https://wa.me/${CONFIG.WHATSAPP_NUMBER}?text=${encodeURIComponent(mensajeWhatsApp)}`;
+                window.open(urlWhatsApp, '_blank');
+
+                const backendUrl = 'https://tu-backend.onrender.com/api/crear-gist-pedido'; // CAMBIA ESTO
+
+                const pedidoBackend = {
+                    nombre,
+                    apellidos,
+                    telefono,
+                    direccion,
+                    pedido: pedidoDetalle,
+                    total: totalFormateado
+                };
+
+                const resBackend = await fetch(backendUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(pedidoBackend)
+                });
+
+                const result = await resBackend.json();
+                if (result.success) {
+                    console.log('✅ Pedido guardado en GitHub:', result.gistUrl);
+                } else {
+                    console.error('❌ Error del backend:', result.error);
+                }
+
+            } catch (error) {
+                console.error('Error al procesar el pedido:', error);
+            } finally {
+                modal.style.display = 'none';
+                document.getElementById('whatsapp-form').reset();
+            }
         });
-    </script>
-</body>
-</html>
