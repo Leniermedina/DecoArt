@@ -461,7 +461,7 @@
         cargarTodasLasSecciones();
         actualizarContadorCarrito();
 
-        // Modal WhatsApp (igual que antes)
+        // Modal WhatsApp con envío al backend
         const modal = document.getElementById('whatsapp-modal');
         const floatingWhatsApp = document.getElementById('whatsapp-floating');
         const closeModal = document.querySelector('.close-modal');
@@ -480,8 +480,9 @@
             }
         });
 
-        document.getElementById('whatsapp-form').addEventListener('submit', (e) => {
+        document.getElementById('whatsapp-form').addEventListener('submit', async (e) => {
             e.preventDefault();
+
             const nombre = document.getElementById('nombre').value.trim();
             const apellidos = document.getElementById('apellidos').value.trim();
             const telefono = document.getElementById('telefono').value.trim();
@@ -498,35 +499,77 @@
                 return;
             }
 
-            fetch('productos.json')
-                .then(response => response.json())
-                .then(data => {
-                    const productos = data.categorias.flatMap(cat => cat.productos);
-                    let mensaje = `Buenos días, quiero hacer este pedido:\n`;
-                    mensaje += `Mi nombre es ${nombre} ${apellidos}.\n`;
-                    mensaje += `Mi número es ${telefono}.\n`;
-                    mensaje += `Mi dirección es ${direccion}.\n\n`;
-                    mensaje += `Pedido:\n`;
-                    let total = 0;
-                    cart.forEach(item => {
-                        const prod = productos.find(p => p.id === item.id);
-                        if (prod) {
-                            const nombreProd = currentLanguage === 'es' ? prod.nombre_es : prod.nombre_en;
-                            const subtotal = prod.precio * item.cantidad;
-                            mensaje += `- ${item.cantidad} x ${nombreProd} (${CONFIG.CURRENCY}${subtotal.toFixed(2)})\n`;
-                            total += subtotal;
-                        }
-                    });
-                    mensaje += `Total: ${CONFIG.CURRENCY}${total.toFixed(2)}`;
+            try {
+                // Cargar productos.json
+                const response = await fetch('productos.json');
+                const data = await response.json();
+                const productos = data.categorias.flatMap(cat => cat.productos);
 
-                    const url = `https://wa.me/${CONFIG.WHATSAPP_NUMBER}?text=${encodeURIComponent(mensaje)}`;
-                    window.open(url, '_blank');
-                    modal.style.display = 'none';
-                })
-                .catch(err => {
-                    console.error('Error cargando productos', err);
-                    alert('Error al preparar el pedido. Intente más tarde.');
+                // Construir mensaje para WhatsApp
+                let mensajeWhatsApp = `Buenos días, quiero hacer este pedido:\n`;
+                mensajeWhatsApp += `Mi nombre es ${nombre} ${apellidos}.\n`;
+                mensajeWhatsApp += `Mi número es ${telefono}.\n`;
+                mensajeWhatsApp += `Mi dirección es ${direccion}.\n\n`;
+                mensajeWhatsApp += `Pedido:\n`;
+
+                const pedidoDetalle = [];
+                let total = 0;
+
+                cart.forEach(item => {
+                    const prod = productos.find(p => p.id === item.id);
+                    if (prod) {
+                        const nombreProd = currentLanguage === 'es' ? prod.nombre_es : prod.nombre_en;
+                        const subtotal = prod.precio * item.cantidad;
+                        mensajeWhatsApp += `- ${item.cantidad} x ${nombreProd} (${CONFIG.CURRENCY}${subtotal.toFixed(2)})\n`;
+                        total += subtotal;
+
+                        pedidoDetalle.push({
+                            cantidad: item.cantidad,
+                            nombre: nombreProd,
+                            precio: `${CONFIG.CURRENCY}${prod.precio.toFixed(2)}`,
+                            subtotal: `${CONFIG.CURRENCY}${subtotal.toFixed(2)}`
+                        });
+                    }
                 });
+
+                mensajeWhatsApp += `Total: ${CONFIG.CURRENCY}${total.toFixed(2)}`;
+                const totalFormateado = `${CONFIG.CURRENCY}${total.toFixed(2)}`;
+
+                // 1. Abrir WhatsApp
+                const urlWhatsApp = `https://wa.me/${CONFIG.WHATSAPP_NUMBER}?text=${encodeURIComponent(mensajeWhatsApp)}`;
+                window.open(urlWhatsApp, '_blank');
+
+                // 2. Enviar al backend en Render
+                const backendUrl = 'https://decoart.onrender.com/api/crear-gist-pedido';
+
+                const pedidoBackend = {
+                    nombre,
+                    apellidos,
+                    telefono,
+                    direccion,
+                    pedido: pedidoDetalle,
+                    total: totalFormateado
+                };
+
+                const resBackend = await fetch(backendUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(pedidoBackend)
+                });
+
+                const result = await resBackend.json();
+                if (result.success) {
+                    console.log('✅ Pedido guardado en GitHub:', result.gistUrl);
+                } else {
+                    console.error('❌ Error del backend:', result.error);
+                }
+
+            } catch (error) {
+                console.error('Error al procesar el pedido:', error);
+            } finally {
+                modal.style.display = 'none';
+                document.getElementById('whatsapp-form').reset();
+            }
         });
     </script>
 </body>
