@@ -576,6 +576,7 @@
             }
         });
 
+        // Renderizar el panel lateral del carrito (con ambos totales)
         function renderCartPanel() {
             const container = document.getElementById('cart-panel-content');
             const cart = getCart();
@@ -586,12 +587,15 @@
             }
 
             let html = '';
+            let totalGeneralCUP = 0;
             let totalGeneralUSD = 0;
             cart.forEach(item => {
                 const prod = productosData.find(p => p.id === item.id);
                 if (!prod) return;
                 const nombreProd = currentLanguage === 'es' ? prod.nombre_es : prod.nombre_en;
+                const subtotalCUP = prod.precio_cup * item.cantidad;
                 const subtotalUSD = prod.precio_usd * item.cantidad;
+                totalGeneralCUP += subtotalCUP;
                 totalGeneralUSD += subtotalUSD;
                 html += `
                     <div class="cart-item" data-id="${item.id}">
@@ -599,7 +603,7 @@
                         <div class="cart-item-details">
                             <h4>${nombreProd}</h4>
                             <p class="precio">CUP ${prod.precio_cup} / USD ${prod.precio_usd.toFixed(2)}</p>
-                            <p class="precio">Subtotal: USD ${subtotalUSD.toFixed(2)}</p>
+                            <p class="precio">Subtotal: CUP ${subtotalCUP} / USD ${subtotalUSD.toFixed(2)}</p>
                         </div>
                         <div class="cart-item-controls">
                             <button class="decrement-cart" data-id="${item.id}">-</button>
@@ -610,7 +614,7 @@
                     </div>
                 `;
             });
-            html += `<div class="cart-total">${t('total')}: USD ${totalGeneralUSD.toFixed(2)}</div>`;
+            html += `<div class="cart-total">${t('total')}:<br>CUP ${totalGeneralCUP}<br>USD ${totalGeneralUSD.toFixed(2)}</div>`;
             html += `<div class="cart-actions">
                 <a href="productos.html" class="btn" data-i18n="seguirComprando">${t('seguirComprando')}</a>
                 <button class="btn btn-danger" id="vaciar-carrito-panel" data-i18n="vaciarCarrito">${t('vaciarCarrito')}</button>
@@ -618,7 +622,7 @@
             </div>`;
             container.innerHTML = html;
 
-            // Eventos de cantidad dentro del panel
+            // Eventos del panel
             document.querySelectorAll('.increment-cart').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     const id = parseInt(e.target.dataset.id);
@@ -654,7 +658,7 @@
 
         actualizarContadorCarrito();
 
-        // Modal WhatsApp con ambos precios
+        // Modal WhatsApp (con ambos totales)
         const modal = document.getElementById('whatsapp-modal');
         const floatingWhatsApp = document.getElementById('whatsapp-floating');
         const closeModal = document.querySelector('.close-modal');
@@ -700,27 +704,32 @@
                 mensajeWhatsApp += `Pedido:\n`;
 
                 const pedidoDetalle = [];
+                let totalCUP = 0;
                 let totalUSD = 0;
 
                 cart.forEach(item => {
                     const prod = productosData.find(p => p.id === item.id);
                     if (prod) {
                         const nombreProd = currentLanguage === 'es' ? prod.nombre_es : prod.nombre_en;
+                        const subtotalCUP = prod.precio_cup * item.cantidad;
                         const subtotalUSD = prod.precio_usd * item.cantidad;
-                        mensajeWhatsApp += `- ${item.cantidad} x ${nombreProd} (CUP ${prod.precio_cup} c/u / USD ${prod.precio_usd.toFixed(2)} c/u) → Subtotal USD ${subtotalUSD.toFixed(2)}\n`;
+                        mensajeWhatsApp += `- ${item.cantidad} x ${nombreProd} (CUP ${prod.precio_cup} c/u / USD ${prod.precio_usd.toFixed(2)} c/u) → Subtotal: CUP ${subtotalCUP} / USD ${subtotalUSD.toFixed(2)}\n`;
+                        totalCUP += subtotalCUP;
                         totalUSD += subtotalUSD;
+
                         pedidoDetalle.push({
                             cantidad: item.cantidad,
                             nombre: nombreProd,
                             precio_cup: prod.precio_cup,
                             precio_usd: prod.precio_usd.toFixed(2),
+                            subtotal_cup: subtotalCUP,
                             subtotal_usd: subtotalUSD.toFixed(2)
                         });
                     }
                 });
 
-                mensajeWhatsApp += `Total: USD ${totalUSD.toFixed(2)}`;
-                const totalFormateado = `USD ${totalUSD.toFixed(2)}`;
+                mensajeWhatsApp += `Total: CUP ${totalCUP} / USD ${totalUSD.toFixed(2)}`;
+                const totalFormateado = `CUP ${totalCUP} / USD ${totalUSD.toFixed(2)}`;
 
                 const urlWhatsApp = `https://wa.me/${CONFIG.WHATSAPP_NUMBER}?text=${encodeURIComponent(mensajeWhatsApp)}`;
                 window.open(urlWhatsApp, '_blank');
