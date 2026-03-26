@@ -9,57 +9,187 @@
     <style>
         /* Mismos estilos globales + específicos para carrito */
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: Arial, sans-serif; line-height: 1.6; padding-bottom: 60px; background-color: #f9f9f9; }
-        header { background: #333; color: #fff; padding: 1rem; position: sticky; top: 0; z-index: 1000; }
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            padding-bottom: 60px;
+            background-color: var(--bg-body);
+            color: var(--text-primary);
+            transition: background-color 0.3s, color 0.3s;
+        }
+        :root {
+            --bg-body: #f9f9f9;
+            --text-primary: #333;
+            --bg-header: #333;
+            --text-header: #fff;
+            --bg-card: #fff;
+            --border-card: #ddd;
+            --shadow: 0 2px 5px rgba(0,0,0,0.1);
+            --btn-primary: #28a745;
+            --btn-primary-hover: #218838;
+            --btn-danger: #dc3545;
+            --btn-danger-hover: #c82333;
+            --bg-modal: #fff;
+            --text-modal: #333;
+            --bg-cart-panel: #fff;
+            --bg-cart-header: #333;
+            --border-cart-item: #ddd;
+        }
+        body.dark {
+            --bg-body: #1a1a2e;
+            --text-primary: #eee;
+            --bg-header: #0f0f1a;
+            --text-header: #fff;
+            --bg-card: #16213e;
+            --border-card: #2a2a3e;
+            --shadow: 0 2px 5px rgba(0,0,0,0.3);
+            --btn-primary: #28a745;
+            --btn-primary-hover: #2ecc71;
+            --bg-modal: #16213e;
+            --text-modal: #eee;
+            --bg-cart-panel: #16213e;
+            --bg-cart-header: #0f0f1a;
+            --border-cart-item: #2a2a3e;
+        }
+        header {
+            background: var(--bg-header);
+            color: var(--text-header);
+            padding: 1rem;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            transition: transform 0.3s ease;
+        }
+        header.hide { transform: translateY(-100%); }
         nav { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; }
-        .nav-links a { color: #fff; text-decoration: none; margin: 0 0.5rem; padding: 0.5rem; }
-        .nav-links a:hover { background: #555; border-radius: 4px; }
-        .idioma button { background: none; border: 1px solid #fff; color: #fff; padding: 0.3rem 0.6rem; margin: 0 0.2rem; cursor: pointer; border-radius: 4px; font-size: 1.2rem; }
-        .idioma button.active { background: #fff; color: #333; }
-        main { padding: 2rem; max-width: 1200px; margin: auto; }
-        .btn { display: inline-block; background: #28a745; color: #fff; padding: 0.6rem 1.2rem; text-decoration: none; border-radius: 5px; border: none; cursor: pointer; font-size: 1rem; }
-        .btn:hover { background: #218838; }
-        .btn-danger { background: #dc3545; }
-        .btn-danger:hover { background: #c82333; }
+        .nav-links a { color: var(--text-header); text-decoration: none; margin: 0 0.5rem; padding: 0.5rem; border-radius: 4px; transition: background 0.3s; }
+        .nav-links a:hover { background: #555; }
+        .idioma button, .dark-mode-toggle {
+            background: none;
+            border: 1px solid var(--text-header);
+            color: var(--text-header);
+            padding: 0.3rem 0.6rem;
+            margin: 0 0.2rem;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 1.2rem;
+            transition: all 0.3s;
+        }
+        .idioma button.active {
+            background: var(--text-header);
+            color: var(--bg-header);
+        }
+        .dark-mode-toggle { font-size: 1rem; }
+        main { padding: 2rem; max-width: 1200px; margin: auto; margin-top: 80px; }
+        .btn {
+            display: inline-block;
+            background: var(--btn-primary);
+            color: #fff;
+            padding: 0.6rem 1.2rem;
+            text-decoration: none;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.3s;
+        }
+        .btn:hover { background: var(--btn-primary-hover); }
+        .btn-danger { background: var(--btn-danger); }
+        .btn-danger:hover { background: var(--btn-danger-hover); }
         .floating-buttons { position: fixed; bottom: 20px; right: 20px; display: flex; flex-direction: column; gap: 10px; z-index: 1000; }
-        .floating-btn { width: 60px; height: 60px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 30px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); cursor: pointer; border: none; }
+        .floating-btn { width: 60px; height: 60px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 30px; box-shadow: var(--shadow); cursor: pointer; border: none; transition: transform 0.2s; }
+        .floating-btn:hover { transform: scale(1.1); }
         .floating-btn.cart { background: #ff6600; color: white; }
         .floating-btn.whatsapp { background: #25D366; color: white; }
         .floating-btn .cart-count { position: absolute; top: 0; right: 0; background: red; color: white; border-radius: 50%; padding: 2px 6px; font-size: 0.8rem; }
-        .cart-panel { position: fixed; top: 0; right: -400px; width: 100%; max-width: 400px; height: 100%; background: #fff; box-shadow: -2px 0 5px rgba(0,0,0,0.2); transition: right 0.3s ease; z-index: 2000; display: flex; flex-direction: column; }
+        .cart-panel {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 100%;
+            max-width: 400px;
+            height: 100%;
+            background: var(--bg-cart-panel);
+            box-shadow: -2px 0 5px rgba(0,0,0,0.2);
+            transition: right 0.3s ease;
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+        }
         .cart-panel.open { right: 0; }
-        .cart-panel-header { display: flex; justify-content: space-between; align-items: center; padding: 1rem; background: #333; color: #fff; }
+        .cart-panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background: var(--bg-cart-header);
+            color: var(--text-header);
+        }
         .cart-panel-header h2 { margin: 0; font-size: 1.2rem; }
-        .cart-panel-header .close-panel { background: none; border: none; color: #fff; font-size: 2rem; cursor: pointer; }
+        .cart-panel-header .close-panel { background: none; border: none; color: var(--text-header); font-size: 2rem; cursor: pointer; }
         .cart-panel-content { flex: 1; overflow-y: auto; padding: 1rem; }
-        .cart-item { display: flex; align-items: center; gap: 1rem; padding: 1rem 0; border-bottom: 1px solid #ddd; }
+        .cart-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border-cart-item);
+        }
         .cart-item img { width: 50px; height: 50px; object-fit: cover; border-radius: 4px; }
         .cart-item-details { flex: 1; }
         .cart-item-details h4 { margin: 0 0 0.5rem; }
-        .cart-item-details .precio { font-weight: bold; color: #28a745; }
+        .cart-item-details .precio { font-weight: bold; color: var(--btn-primary); }
         .cart-item-controls { display: flex; align-items: center; gap: 0.5rem; }
-        .cart-item-controls button { width: 30px; height: 30px; background: #ddd; border: none; border-radius: 4px; cursor: pointer; }
+        .cart-item-controls button { width: 30px; height: 30px; background: #ddd; border: none; border-radius: 4px; cursor: pointer; color: #333; }
         .cart-item-controls span { min-width: 30px; text-align: center; }
-        .remove-item { background: #dc3545; color: #fff; border: none; padding: 0.3rem 0.6rem; border-radius: 4px; cursor: pointer; }
+        .remove-item { background: var(--btn-danger); color: #fff; border: none; padding: 0.3rem 0.6rem; border-radius: 4px; cursor: pointer; }
         .cart-total { font-size: 1.2rem; font-weight: bold; text-align: right; margin: 1rem 0; }
         .cart-actions { display: flex; gap: 1rem; justify-content: flex-end; flex-wrap: wrap; }
-        .empty-cart { text-align: center; padding: 2rem; }
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 3000; }
-        .modal-content { background: #fff; padding: 2rem; border-radius: 8px; max-width: 400px; width: 90%; }
+        .empty-cart { text-align: center; padding: 2rem; background: var(--bg-card); border-radius: 8px; }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 3000;
+        }
+        .modal-content {
+            background: var(--bg-modal);
+            color: var(--text-modal);
+            padding: 2rem;
+            border-radius: 8px;
+            max-width: 400px;
+            width: 90%;
+        }
         .modal-content h3 { margin-bottom: 1rem; }
-        .modal-content input { width: 100%; padding: 0.5rem; margin-bottom: 1rem; border: 1px solid #ddd; border-radius: 4px; }
+        .modal-content input {
+            width: 100%;
+            padding: 0.5rem;
+            margin-bottom: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: var(--bg-card);
+            color: var(--text-primary);
+        }
         .modal-actions { display: flex; justify-content: flex-end; gap: 1rem; }
-        .close-modal { background: #ccc; }
-        /* Estilos para la tabla del carrito en main */
+        .close-modal { background: #ccc; color: #333; }
         .cart-table { width: 100%; border-collapse: collapse; margin-bottom: 2rem; }
-        .cart-table th { background: #333; color: #fff; padding: 0.5rem; }
-        .cart-table td { padding: 0.5rem; border-bottom: 1px solid #ddd; vertical-align: middle; }
+        .cart-table th { background: var(--bg-header); color: var(--text-header); padding: 0.5rem; }
+        .cart-table td { padding: 0.5rem; border-bottom: 1px solid var(--border-card); vertical-align: middle; }
         .cart-table img { width: 50px; height: 50px; object-fit: cover; border-radius: 4px; }
         .cart-actions-main { display: flex; gap: 1rem; justify-content: flex-end; flex-wrap: wrap; }
+        .cantidad-control { display: flex; align-items: center; gap: 0.5rem; }
+        .cantidad-control button { width: 30px; height: 30px; background: #ddd; border: none; cursor: pointer; border-radius: 4px; color: #333; }
         @media (max-width: 600px) {
             nav { flex-direction: column; gap: 1rem; }
             .nav-links { display: flex; flex-wrap: wrap; justify-content: center; }
-            main { padding: 1rem; }
+            main { padding: 1rem; margin-top: 120px; }
             .cart-panel { max-width: 100%; }
             .cart-table, .cart-table thead, .cart-table tbody, .cart-table tr, .cart-table td { display: block; }
             .cart-table thead { display: none; }
@@ -69,7 +199,7 @@
     </style>
 </head>
 <body>
-    <header>
+    <header id="main-header">
         <nav>
             <div class="logo">🛒 DecoArt</div>
             <div class="nav-links">
@@ -81,6 +211,7 @@
             <div class="idioma">
                 <button onclick="setLanguage('es')" id="lang-es">🇪🇸</button>
                 <button onclick="setLanguage('en')" id="lang-en">🇺🇸</button>
+                <button class="dark-mode-toggle" id="dark-mode-toggle">🌙</button>
             </div>
         </nav>
     </header>
@@ -107,9 +238,7 @@
             <h2 data-i18n="tuCarrito">Tu Carrito</h2>
             <button class="close-panel">&times;</button>
         </div>
-        <div class="cart-panel-content" id="cart-panel-content">
-            <!-- Contenido dinámico -->
-        </div>
+        <div class="cart-panel-content" id="cart-panel-content"></div>
     </aside>
 
     <!-- Modal WhatsApp -->
@@ -138,17 +267,15 @@
         function renderCarritoMain() {
             const container = document.getElementById('cart-container-main');
             const cart = getCart();
-
             if (cart.length === 0) {
                 container.innerHTML = `<div class="empty-cart"><p data-i18n="carritoVacio">${t('carritoVacio')}</p><a href="productos.html" class="btn" data-i18n="seguirComprando">${t('seguirComprando')}</a></div>`;
                 return;
             }
-
             fetch('productos.json')
                 .then(response => response.json())
                 .then(data => {
                     const productos = data.categorias.flatMap(cat => cat.productos);
-                    productosData = productos; // guardar
+                    productosData = productos;
                     let html = '<table class="cart-table"><thead><tr><th>' + t('producto') + '</th><th>' + t('precio') + '</th><th>' + t('cantidad') + '</th><th>' + t('subtotal') + '</th><th></th></tr></thead><tbody>';
                     let totalGeneral = 0;
                     cart.forEach(item => {
@@ -157,7 +284,6 @@
                         const nombreProd = currentLanguage === 'es' ? prod.nombre_es : prod.nombre_en;
                         const subtotal = prod.precio * item.cantidad;
                         totalGeneral += subtotal;
-
                         html += `<tr data-id="${item.id}">
                             <td data-label="${t('producto')}"><img src="${prod.imagen}" alt="${nombreProd}" onerror="this.src='img/placeholder.jpg'"> ${nombreProd}</td>
                             <td data-label="${t('precio')}">${CONFIG.CURRENCY}${prod.precio.toFixed(2)}</td>
@@ -181,7 +307,6 @@
                     </div>`;
                     container.innerHTML = html;
 
-                    // Eventos
                     document.querySelectorAll('.increment-main').forEach(btn => {
                         btn.addEventListener('click', (e) => {
                             const id = parseInt(e.target.dataset.id);
@@ -194,11 +319,8 @@
                         btn.addEventListener('click', (e) => {
                             const id = parseInt(e.target.dataset.id);
                             const item = cart.find(i => i.id === id);
-                            if (item.cantidad > 1) {
-                                actualizarCantidad(id, item.cantidad - 1);
-                            } else {
-                                eliminarDelCarrito(id);
-                            }
+                            if (item.cantidad > 1) actualizarCantidad(id, item.cantidad - 1);
+                            else eliminarDelCarrito(id);
                             renderCarritoMain();
                         });
                     });
@@ -237,38 +359,54 @@
         setLanguage(currentLanguage);
         renderCarritoMain();
 
-        // Panel del carrito (mismas funciones que antes)
+        // Dark Mode
+        const darkModeToggle = document.getElementById('dark-mode-toggle');
+        const applyDarkMode = (isDark) => {
+            if (isDark) {
+                document.body.classList.add('dark');
+                darkModeToggle.textContent = '☀️';
+                localStorage.setItem('darkMode', 'enabled');
+            } else {
+                document.body.classList.remove('dark');
+                darkModeToggle.textContent = '🌙';
+                localStorage.setItem('darkMode', 'disabled');
+            }
+        };
+        const savedDarkMode = localStorage.getItem('darkMode');
+        if (savedDarkMode === 'enabled') applyDarkMode(true);
+        else if (savedDarkMode === 'disabled') applyDarkMode(false);
+        else applyDarkMode(window.matchMedia('(prefers-color-scheme: dark)').matches);
+        darkModeToggle.addEventListener('click', () => applyDarkMode(!document.body.classList.contains('dark')));
+
+        // Header hide on scroll
+        let lastScrollTop = 0;
+        const header = document.getElementById('main-header');
+        window.addEventListener('scroll', () => {
+            let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            if (scrollTop > lastScrollTop && scrollTop > 100) header.classList.add('hide');
+            else header.classList.remove('hide');
+            lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+        });
+
+        // Panel del carrito
         const cartPanel = document.getElementById('cart-panel');
         const cartFloating = document.getElementById('cart-floating');
         const closePanel = document.querySelector('.close-panel');
-
-        function openCartPanel() {
-            cartPanel.classList.add('open');
-            renderCartPanel();
-        }
-
-        function closeCartPanel() {
-            cartPanel.classList.remove('open');
-        }
-
+        function openCartPanel() { cartPanel.classList.add('open'); renderCartPanel(); }
+        function closeCartPanel() { cartPanel.classList.remove('open'); }
         cartFloating.addEventListener('click', openCartPanel);
         closePanel.addEventListener('click', closeCartPanel);
-
         window.addEventListener('click', (e) => {
-            if (!cartPanel.contains(e.target) && !cartFloating.contains(e.target) && cartPanel.classList.contains('open')) {
-                closeCartPanel();
-            }
+            if (!cartPanel.contains(e.target) && !cartFloating.contains(e.target) && cartPanel.classList.contains('open')) closeCartPanel();
         });
 
         function renderCartPanel() {
             const container = document.getElementById('cart-panel-content');
             const cart = getCart();
-
             if (cart.length === 0) {
                 container.innerHTML = `<div class="empty-cart"><p data-i18n="carritoVacio">${t('carritoVacio')}</p><a href="productos.html" class="btn" data-i18n="seguirComprando">${t('seguirComprando')}</a></div>`;
                 return;
             }
-
             let html = '';
             let totalGeneral = 0;
             cart.forEach(item => {
@@ -277,7 +415,6 @@
                 const nombreProd = currentLanguage === 'es' ? prod.nombre_es : prod.nombre_en;
                 const subtotal = prod.precio * item.cantidad;
                 totalGeneral += subtotal;
-
                 html += `
                     <div class="cart-item" data-id="${item.id}">
                         <img src="${prod.imagen}" alt="${nombreProd}" onerror="this.src='img/placeholder.jpg'">
@@ -308,18 +445,15 @@
                     const item = cart.find(i => i.id === id);
                     actualizarCantidad(id, item.cantidad + 1);
                     renderCartPanel();
-                    renderCarritoMain(); // para mantener sincronizado
+                    renderCarritoMain();
                 });
             });
             document.querySelectorAll('.decrement-cart').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     const id = parseInt(e.target.dataset.id);
                     const item = cart.find(i => i.id === id);
-                    if (item.cantidad > 1) {
-                        actualizarCantidad(id, item.cantidad - 1);
-                    } else {
-                        eliminarDelCarrito(id);
-                    }
+                    if (item.cantidad > 1) actualizarCantidad(id, item.cantidad - 1);
+                    else eliminarDelCarrito(id);
                     renderCartPanel();
                     renderCarritoMain();
                 });
@@ -344,59 +478,30 @@
 
         actualizarContadorCarrito();
 
-        // Modal WhatsApp con envío al backend
+        // Modal WhatsApp
         const modal = document.getElementById('whatsapp-modal');
         const floatingWhatsApp = document.getElementById('whatsapp-floating');
         const closeModal = document.querySelector('.close-modal');
-
-        floatingWhatsApp.addEventListener('click', () => {
-            modal.style.display = 'flex';
-        });
-
-        closeModal.addEventListener('click', () => {
-            modal.style.display = 'none';
-        });
-
-        window.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                modal.style.display = 'none';
-            }
-        });
+        floatingWhatsApp.addEventListener('click', () => modal.style.display = 'flex');
+        closeModal.addEventListener('click', () => modal.style.display = 'none');
+        window.addEventListener('click', (e) => { if (e.target === modal) modal.style.display = 'none'; });
 
         document.getElementById('whatsapp-form').addEventListener('submit', async (e) => {
             e.preventDefault();
-
             const nombre = document.getElementById('nombre').value.trim();
             const apellidos = document.getElementById('apellidos').value.trim();
             const telefono = document.getElementById('telefono').value.trim();
             const direccion = document.getElementById('direccion').value.trim();
-
-            if (!nombre || !apellidos || !telefono || !direccion) {
-                alert('Por favor complete todos los campos');
-                return;
-            }
-
+            if (!nombre || !apellidos || !telefono || !direccion) { alert('Por favor complete todos los campos'); return; }
             const cart = getCart();
-            if (cart.length === 0) {
-                alert('El carrito está vacío');
-                return;
-            }
-
+            if (cart.length === 0) { alert('El carrito está vacío'); return; }
             try {
-                // Cargar productos.json (aunque tengas productosData, mejor asegurar)
                 const response = await fetch('productos.json');
                 const data = await response.json();
                 const productos = data.categorias.flatMap(cat => cat.productos);
-
-                let mensajeWhatsApp = `Buenos días, quiero hacer este pedido:\n`;
-                mensajeWhatsApp += `Mi nombre es ${nombre} ${apellidos}.\n`;
-                mensajeWhatsApp += `Mi número es ${telefono}.\n`;
-                mensajeWhatsApp += `Mi dirección es ${direccion}.\n\n`;
-                mensajeWhatsApp += `Pedido:\n`;
-
+                let mensajeWhatsApp = `Buenos días, quiero hacer este pedido:\nMi nombre es ${nombre} ${apellidos}.\nMi número es ${telefono}.\nMi dirección es ${direccion}.\n\nPedido:\n`;
                 const pedidoDetalle = [];
                 let total = 0;
-
                 cart.forEach(item => {
                     const prod = productos.find(p => p.id === item.id);
                     if (prod) {
@@ -404,52 +509,23 @@
                         const subtotal = prod.precio * item.cantidad;
                         mensajeWhatsApp += `- ${item.cantidad} x ${nombreProd} (${CONFIG.CURRENCY}${subtotal.toFixed(2)})\n`;
                         total += subtotal;
-
-                        pedidoDetalle.push({
-                            cantidad: item.cantidad,
-                            nombre: nombreProd,
-                            precio: `${CONFIG.CURRENCY}${prod.precio.toFixed(2)}`,
-                            subtotal: `${CONFIG.CURRENCY}${subtotal.toFixed(2)}`
-                        });
+                        pedidoDetalle.push({ cantidad: item.cantidad, nombre: nombreProd, precio: `${CONFIG.CURRENCY}${prod.precio.toFixed(2)}`, subtotal: `${CONFIG.CURRENCY}${subtotal.toFixed(2)}` });
                     }
                 });
-
                 mensajeWhatsApp += `Total: ${CONFIG.CURRENCY}${total.toFixed(2)}`;
                 const totalFormateado = `${CONFIG.CURRENCY}${total.toFixed(2)}`;
-
-                const urlWhatsApp = `https://wa.me/${CONFIG.WHATSAPP_NUMBER}?text=${encodeURIComponent(mensajeWhatsApp)}`;
-                window.open(urlWhatsApp, '_blank');
-
+                window.open(`https://wa.me/${CONFIG.WHATSAPP_NUMBER}?text=${encodeURIComponent(mensajeWhatsApp)}`, '_blank');
                 const backendUrl = 'https://decoart.onrender.com/api/crear-gist-pedido';
-
-                const pedidoBackend = {
-                    nombre,
-                    apellidos,
-                    telefono,
-                    direccion,
-                    pedido: pedidoDetalle,
-                    total: totalFormateado
-                };
-
                 const resBackend = await fetch(backendUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(pedidoBackend)
+                    body: JSON.stringify({ nombre, apellidos, telefono, direccion, pedido: pedidoDetalle, total: totalFormateado })
                 });
-
                 const result = await resBackend.json();
-                if (result.success) {
-                    console.log('✅ Pedido guardado en GitHub:', result.gistUrl);
-                } else {
-                    console.error('❌ Error del backend:', result.error);
-                }
-
-            } catch (error) {
-                console.error('Error al procesar el pedido:', error);
-            } finally {
-                modal.style.display = 'none';
-                document.getElementById('whatsapp-form').reset();
-            }
+                if (result.success) console.log('✅ Pedido guardado en GitHub:', result.gistUrl);
+                else console.error('❌ Error del backend:', result.error);
+            } catch (error) { console.error('Error al procesar el pedido:', error); }
+            finally { modal.style.display = 'none'; document.getElementById('whatsapp-form').reset(); }
         });
     </script>
 </body>
