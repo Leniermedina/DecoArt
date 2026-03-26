@@ -17,7 +17,6 @@
             color: var(--text-primary);
             transition: background-color 0.3s, color 0.3s;
         }
-        /* Variables de tema claro (por defecto) */
         :root {
             --bg-body: #f4f4f4;
             --text-primary: #333;
@@ -40,7 +39,6 @@
             --bg-empty-cart: #fff;
             --bg-footer: transparent;
         }
-        /* Variables de tema oscuro */
         body.dark {
             --bg-body: #1a1a2e;
             --text-primary: #eee;
@@ -74,9 +72,7 @@
             transition: transform 0.3s ease;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
-        header.hide {
-            transform: translateY(-100%);
-        }
+        header.hide { transform: translateY(-100%); }
         nav { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; }
         .logo { font-size: 1.5rem; font-weight: bold; color: var(--text-header); }
         .nav-links a {
@@ -103,14 +99,13 @@
             background: var(--text-header);
             color: var(--bg-header);
         }
-        .dark-mode-toggle {
-            background: none;
-            border: 1px solid var(--text-header);
-            color: var(--text-header);
-            font-size: 1rem;
-            padding: 0.3rem 0.6rem;
+        .dark-mode-toggle { font-size: 1rem; }
+        main {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: auto;
+            padding-top: 80px; /* espacio para header fijo */
         }
-        main { padding: 2rem; max-width: 1200px; margin: auto; margin-top: 80px; }
         .btn {
             display: inline-block;
             background: var(--btn-primary);
@@ -315,7 +310,7 @@
         @media (max-width: 600px) {
             nav { flex-direction: column; gap: 1rem; }
             .nav-links { display: flex; flex-wrap: wrap; justify-content: center; }
-            main { padding: 1rem; margin-top: 120px; }
+            main { padding: 1rem; padding-top: 120px; } /* más espacio en móvil */
             .cart-panel { max-width: 100%; }
             .hero h1 { font-size: 1.8rem; }
         }
@@ -421,9 +416,7 @@
             <h2 data-i18n="tuCarrito">Tu Carrito</h2>
             <button class="close-panel">&times;</button>
         </div>
-        <div class="cart-panel-content" id="cart-panel-content">
-            <!-- Contenido dinámico del carrito -->
-        </div>
+        <div class="cart-panel-content" id="cart-panel-content"></div>
     </aside>
 
     <!-- Modal WhatsApp -->
@@ -481,7 +474,6 @@
         translations.es.verTodos = "Ver todos los productos";
         translations.en.verTodos = "View all products";
 
-        // Sobrescribir updateUILanguage para esta página
         function updateUILanguage() {
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
@@ -512,56 +504,33 @@
             }
         };
         const savedDarkMode = localStorage.getItem('darkMode');
-        if (savedDarkMode === 'enabled') {
-            applyDarkMode(true);
-        } else if (savedDarkMode === 'disabled') {
-            applyDarkMode(false);
-        } else {
-            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-            applyDarkMode(prefersDark);
-        }
-        darkModeToggle.addEventListener('click', () => {
-            const isDark = !document.body.classList.contains('dark');
-            applyDarkMode(isDark);
-        });
+        if (savedDarkMode === 'enabled') applyDarkMode(true);
+        else if (savedDarkMode === 'disabled') applyDarkMode(false);
+        else applyDarkMode(window.matchMedia('(prefers-color-scheme: dark)').matches);
+        darkModeToggle.addEventListener('click', () => applyDarkMode(!document.body.classList.contains('dark')));
 
-        // Ocultar/mostrar header al hacer scroll
+        // Header hide on scroll
         let lastScrollTop = 0;
         const header = document.getElementById('main-header');
         window.addEventListener('scroll', () => {
             let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-            if (scrollTop > lastScrollTop && scrollTop > 100) {
-                header.classList.add('hide');
-            } else {
-                header.classList.remove('hide');
-            }
+            if (scrollTop > lastScrollTop && scrollTop > 100) header.classList.add('hide');
+            else header.classList.remove('hide');
             lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
         });
 
-        // Panel del carrito (abrir/cerrar)
+        // Panel del carrito
         const cartPanel = document.getElementById('cart-panel');
         const cartFloating = document.getElementById('cart-floating');
         const closePanel = document.querySelector('.close-panel');
-
-        function openCartPanel() {
-            cartPanel.classList.add('open');
-            renderCartPanel();
-        }
-
-        function closeCartPanel() {
-            cartPanel.classList.remove('open');
-        }
-
+        function openCartPanel() { cartPanel.classList.add('open'); renderCartPanel(); }
+        function closeCartPanel() { cartPanel.classList.remove('open'); }
         cartFloating.addEventListener('click', openCartPanel);
         closePanel.addEventListener('click', closeCartPanel);
-
         window.addEventListener('click', (e) => {
-            if (!cartPanel.contains(e.target) && !cartFloating.contains(e.target) && cartPanel.classList.contains('open')) {
-                closeCartPanel();
-            }
+            if (!cartPanel.contains(e.target) && !cartFloating.contains(e.target) && cartPanel.classList.contains('open')) closeCartPanel();
         });
 
-        // Renderizar el panel lateral del carrito (con ambos totales)
         function renderCartPanel() {
             const container = document.getElementById('cart-panel-content');
             const cart = getCart();
@@ -611,7 +580,6 @@
                     </div>`;
                     container.innerHTML = html;
 
-                    // Eventos del panel
                     document.querySelectorAll('.increment-cart').forEach(btn => {
                         btn.addEventListener('click', (e) => {
                             const id = parseInt(e.target.dataset.id);
@@ -647,7 +615,6 @@
                 .catch(err => console.error('Error cargando productos:', err));
         }
 
-        // Funciones para las tarjetas de productos (igual que antes)
         function crearTarjetaProducto(producto, categoriaNombre, badge = null) {
             const nombreProd = currentLanguage === 'es' ? producto.nombre_es : producto.nombre_en;
             const catNombre = categoriaNombre || (currentLanguage === 'es' ? producto.categoria?.nombre_es : producto.categoria?.nombre_en) || '';
@@ -719,24 +686,14 @@
         cargarTodasLasSecciones();
         actualizarContadorCarrito();
 
-        // Modal WhatsApp (con ambos totales)
+        // Modal WhatsApp
         const modal = document.getElementById('whatsapp-modal');
         const floatingWhatsApp = document.getElementById('whatsapp-floating');
         const closeModal = document.querySelector('.close-modal');
 
-        floatingWhatsApp.addEventListener('click', () => {
-            modal.style.display = 'flex';
-        });
-
-        closeModal.addEventListener('click', () => {
-            modal.style.display = 'none';
-        });
-
-        window.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                modal.style.display = 'none';
-            }
-        });
+        floatingWhatsApp.addEventListener('click', () => { modal.style.display = 'flex'; });
+        closeModal.addEventListener('click', () => { modal.style.display = 'none'; });
+        window.addEventListener('click', (e) => { if (e.target === modal) modal.style.display = 'none'; });
 
         document.getElementById('whatsapp-form').addEventListener('submit', async (e) => {
             e.preventDefault();
