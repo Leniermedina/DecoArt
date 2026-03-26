@@ -102,6 +102,15 @@
                     "precio_usd": 2.90,
                     "precio": 2.90,
                     "imagen": "img/tobilleras.jpg"
+                },
+                {
+                    "id": 24,
+                    "nombre_es": "Collar con perla",
+                    "nombre_en": "Pearl Necklace",
+                    "precio_cup": 1800,
+                    "precio_usd": 3.00,
+                    "precio": 3.00,
+                    "imagen": "img/collar_con_perla.jpg"
                 }
             ]
         },
