@@ -418,7 +418,7 @@
     <script>
         let productosData = [];
 
-        // Renderizar la tabla principal del carrito (con ambos precios)
+        // Renderizar la tabla principal del carrito (con subtotales en CUP y USD, total en ambas)
         function renderCarritoMain() {
             const container = document.getElementById('cart-container-main');
             const cart = getCart();
@@ -432,19 +432,22 @@
                 .then(data => {
                     const productos = data.categorias.flatMap(cat => cat.productos);
                     productosData = productos;
-                    let html = '<table class="cart-table"><thead><tr>' +
+                    let html = '<table class="cart-table"><thead> tr>' +
                         '<th>' + t('producto') + '</th>' +
                         '<th>' + t('precio') + '</th>' +
                         '<th>' + t('cantidad') + '</th>' +
                         '<th>' + t('subtotal') + '</th>' +
                         '<th></th>' +
                         '</tr></thead><tbody>';
+                    let totalGeneralCUP = 0;
                     let totalGeneralUSD = 0;
                     cart.forEach(item => {
                         const prod = productos.find(p => p.id === item.id);
                         if (!prod) return;
                         const nombreProd = currentLanguage === 'es' ? prod.nombre_es : prod.nombre_en;
+                        const subtotalCUP = prod.precio_cup * item.cantidad;
                         const subtotalUSD = prod.precio_usd * item.cantidad;
+                        totalGeneralCUP += subtotalCUP;
                         totalGeneralUSD += subtotalUSD;
                         html += `<tr data-id="${item.id}">
                             <td data-label="${t('producto')}"><img src="${prod.imagen}" alt="${nombreProd}" onerror="this.src='img/placeholder.jpg'"> ${nombreProd}</td>
@@ -456,12 +459,12 @@
                                     <button class="increment-main" data-id="${item.id}">+</button>
                                 </div>
                             </td>
-                            <td data-label="${t('subtotal')}">USD ${subtotalUSD.toFixed(2)}</td>
+                            <td data-label="${t('subtotal')}">CUP ${subtotalCUP}<br>USD ${subtotalUSD.toFixed(2)}</td>
                             <td><button class="btn btn-danger remove-main" data-id="${item.id}">${t('remove')}</button></td>
                         </tr>`;
                     });
                     html += '</tbody></table>';
-                    html += `<div class="cart-total"><strong>${t('total')}: USD ${totalGeneralUSD.toFixed(2)}</strong></div>`;
+                    html += `<div class="cart-total"><strong>${t('total')}:</strong><br>CUP ${totalGeneralCUP}<br>USD ${totalGeneralUSD.toFixed(2)}</div>`;
                     html += `<div class="cart-actions-main">
                         <a href="productos.html" class="btn" data-i18n="seguirComprando">${t('seguirComprando')}</a>
                         <button class="btn btn-danger" id="vaciar-main" data-i18n="vaciarCarrito">${t('vaciarCarrito')}</button>
@@ -469,7 +472,7 @@
                     </div>`;
                     container.innerHTML = html;
 
-                    // Eventos de la tabla
+                    // Eventos
                     document.querySelectorAll('.increment-main').forEach(btn => {
                         btn.addEventListener('click', (e) => {
                             const id = parseInt(e.target.dataset.id);
@@ -505,7 +508,7 @@
                 .catch(err => console.error('Error cargando productos:', err));
         }
 
-        // Renderizar el panel lateral del carrito (ambos precios)
+        // Renderizar el panel lateral del carrito (con subtotales en CUP y USD, total en ambas)
         function renderCartPanel() {
             const container = document.getElementById('cart-panel-content');
             const cart = getCart();
@@ -516,12 +519,15 @@
             }
 
             let html = '';
+            let totalGeneralCUP = 0;
             let totalGeneralUSD = 0;
             cart.forEach(item => {
                 const prod = productosData.find(p => p.id === item.id);
                 if (!prod) return;
                 const nombreProd = currentLanguage === 'es' ? prod.nombre_es : prod.nombre_en;
+                const subtotalCUP = prod.precio_cup * item.cantidad;
                 const subtotalUSD = prod.precio_usd * item.cantidad;
+                totalGeneralCUP += subtotalCUP;
                 totalGeneralUSD += subtotalUSD;
                 html += `
                     <div class="cart-item" data-id="${item.id}">
@@ -529,7 +535,7 @@
                         <div class="cart-item-details">
                             <h4>${nombreProd}</h4>
                             <p class="precio">CUP ${prod.precio_cup} / USD ${prod.precio_usd.toFixed(2)}</p>
-                            <p class="precio">Subtotal: USD ${subtotalUSD.toFixed(2)}</p>
+                            <p class="precio">Subtotal: CUP ${subtotalCUP} / USD ${subtotalUSD.toFixed(2)}</p>
                         </div>
                         <div class="cart-item-controls">
                             <button class="decrement-cart" data-id="${item.id}">-</button>
@@ -540,7 +546,7 @@
                     </div>
                 `;
             });
-            html += `<div class="cart-total">${t('total')}: USD ${totalGeneralUSD.toFixed(2)}</div>`;
+            html += `<div class="cart-total">${t('total')}:<br>CUP ${totalGeneralCUP}<br>USD ${totalGeneralUSD.toFixed(2)}</div>`;
             html += `<div class="cart-actions">
                 <a href="productos.html" class="btn" data-i18n="seguirComprando">${t('seguirComprando')}</a>
                 <button class="btn btn-danger" id="vaciar-carrito-panel" data-i18n="vaciarCarrito">${t('vaciarCarrito')}</button>
@@ -555,7 +561,7 @@
                     const item = cart.find(i => i.id === id);
                     actualizarCantidad(id, item.cantidad + 1);
                     renderCartPanel();
-                    renderCarritoMain(); // mantener sincronía
+                    renderCarritoMain();
                 });
             });
             document.querySelectorAll('.decrement-cart').forEach(btn => {
@@ -586,7 +592,6 @@
             });
         }
 
-        // Actualizar idioma y recargar carrito
         function updateUILanguage() {
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
@@ -647,7 +652,7 @@
 
         actualizarContadorCarrito();
 
-        // Modal WhatsApp (con ambos precios)
+        // Modal WhatsApp (con ambos totales)
         const modal = document.getElementById('whatsapp-modal');
         const floatingWhatsApp = document.getElementById('whatsapp-floating');
         const closeModal = document.querySelector('.close-modal');
@@ -668,25 +673,29 @@
             try {
                 let mensajeWhatsApp = `Buenos días, quiero hacer este pedido:\nMi nombre es ${nombre} ${apellidos}.\nMi número es ${telefono}.\nMi dirección es ${direccion}.\n\nPedido:\n`;
                 const pedidoDetalle = [];
+                let totalCUP = 0;
                 let totalUSD = 0;
                 cart.forEach(item => {
                     const prod = productosData.find(p => p.id === item.id);
                     if (prod) {
                         const nombreProd = currentLanguage === 'es' ? prod.nombre_es : prod.nombre_en;
+                        const subtotalCUP = prod.precio_cup * item.cantidad;
                         const subtotalUSD = prod.precio_usd * item.cantidad;
-                        mensajeWhatsApp += `- ${item.cantidad} x ${nombreProd} (CUP ${prod.precio_cup} c/u / USD ${prod.precio_usd.toFixed(2)} c/u) → Subtotal USD ${subtotalUSD.toFixed(2)}\n`;
+                        mensajeWhatsApp += `- ${item.cantidad} x ${nombreProd} (CUP ${prod.precio_cup} c/u / USD ${prod.precio_usd.toFixed(2)} c/u) → Subtotal: CUP ${subtotalCUP} / USD ${subtotalUSD.toFixed(2)}\n`;
+                        totalCUP += subtotalCUP;
                         totalUSD += subtotalUSD;
                         pedidoDetalle.push({
                             cantidad: item.cantidad,
                             nombre: nombreProd,
                             precio_cup: prod.precio_cup,
                             precio_usd: prod.precio_usd.toFixed(2),
+                            subtotal_cup: subtotalCUP,
                             subtotal_usd: subtotalUSD.toFixed(2)
                         });
                     }
                 });
-                mensajeWhatsApp += `Total: USD ${totalUSD.toFixed(2)}`;
-                const totalFormateado = `USD ${totalUSD.toFixed(2)}`;
+                mensajeWhatsApp += `Total: CUP ${totalCUP} / USD ${totalUSD.toFixed(2)}`;
+                const totalFormateado = `CUP ${totalCUP} / USD ${totalUSD.toFixed(2)}`;
                 window.open(`https://wa.me/${CONFIG.WHATSAPP_NUMBER}?text=${encodeURIComponent(mensajeWhatsApp)}`, '_blank');
                 const backendUrl = 'https://decoart.onrender.com/api/crear-gist-pedido';
                 const resBackend = await fetch(backendUrl, {
