@@ -104,6 +104,120 @@
                     "imagen": "img/tobilleras.jpg"
                 }
             ]
+        },
+        {
+            "nombre_es": "Aseo y hogar",
+            "nombre_en": "Home & Personal Care",
+            "productos": [
+                {
+                    "id": 12,
+                    "nombre_es": "Skala Crema de tratamiento capilar",
+                    "nombre_en": "Skala Hair Treatment Cream",
+                    "precio_cup": 3800,
+                    "precio_usd": 7.45,
+                    "precio": 7.45,
+                    "imagen": "img/skala_crema.jpg"
+                },
+                {
+                    "id": 13,
+                    "nombre_es": "Jabón Kare",
+                    "nombre_en": "Kare Soap",
+                    "precio_cup": 150,
+                    "precio_usd": 0.34,
+                    "precio": 0.34,
+                    "imagen": "img/jabon_kare.jpg"
+                },
+                {
+                    "id": 14,
+                    "nombre_es": "Juego de shampoo y acondicionador",
+                    "nombre_en": "Shampoo and Conditioner Set",
+                    "precio_cup": 2400,
+                    "precio_usd": 4.68,
+                    "precio": 4.68,
+                    "imagen": "img/shampoo_acondicionador.jpg"
+                },
+                {
+                    "id": 15,
+                    "nombre_es": "Colonia árabe",
+                    "nombre_en": "Arabian Cologne",
+                    "precio_cup": 1800,
+                    "precio_usd": 3.52,
+                    "precio": 3.52,
+                    "imagen": "img/colonia_arabe.jpg"
+                },
+                {
+                    "id": 16,
+                    "nombre_es": "Papel higiénico 4pack",
+                    "nombre_en": "Toilet Paper 4-pack",
+                    "precio_cup": 582,
+                    "precio_usd": 1.18,
+                    "precio": 1.18,
+                    "imagen": "img/papel_higienico.jpg"
+                },
+                {
+                    "id": 17,
+                    "nombre_es": "Toallitas húmedas 20 unidades",
+                    "nombre_en": "Wet Wipes 20 units",
+                    "precio_cup": 300,
+                    "precio_usd": 0.75,
+                    "precio": 0.75,
+                    "imagen": "img/toallitas_humedas.jpg"
+                },
+                {
+                    "id": 18,
+                    "nombre_es": "Detergente líquido para fregar 1lt",
+                    "nombre_en": "Liquid Dish Detergent 1L",
+                    "precio_cup": 660,
+                    "precio_usd": 1.40,
+                    "precio": 1.40,
+                    "imagen": "img/detergente_fregar.jpg"
+                },
+                {
+                    "id": 19,
+                    "nombre_es": "Detergente líquido para lavar 1lt",
+                    "nombre_en": "Liquid Laundry Detergent 1L",
+                    "precio_cup": 660,
+                    "precio_usd": 1.40,
+                    "precio": 1.40,
+                    "imagen": "img/detergente_lavar.jpg"
+                },
+                {
+                    "id": 20,
+                    "nombre_es": "Esponja de fregar 1 unidad",
+                    "nombre_en": "Scouring Pad 1 unit",
+                    "precio_cup": 100,
+                    "precio_usd": 0.21,
+                    "precio": 0.21,
+                    "imagen": "img/esponja_fregar.jpg"
+                },
+                {
+                    "id": 21,
+                    "nombre_es": "Gel de baño",
+                    "nombre_en": "Body Wash",
+                    "precio_cup": 1500,
+                    "precio_usd": 3.05,
+                    "precio": 3.05,
+                    "imagen": "img/gel_bano.jpg"
+                },
+                {
+                    "id": 22,
+                    "nombre_es": "Frasadas de piso 1 unidad",
+                    "nombre_en": "Floor Cloth 1 unit",
+                    "precio_cup": 282,
+                    "precio_usd": 0.60,
+                    "precio": 0.60,
+                    "imagen": "img/frasadas_piso.jpg"
+                },
+                {
+                    "id": 23,
+                    "nombre_es": "Fosforera 1 unidad",
+                    "nombre_en": "Matchbox 1 unit",
+                    "precio_cup": 100,
+                    "precio_usd": 0.20,
+                    "precio": 0.20,
+                    "imagen": "img/fosforera.jpg"
+                }
+            ]
         }
     ]
 }
