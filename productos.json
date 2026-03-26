@@ -59,6 +59,38 @@
                     "precio_cup": 1000,
                     "precio_usd": 2.00,
                     "imagen": "img/collar_playero.jpg"
+                },
+                {
+                    "id": 8,
+                    "nombre_es": "Cuarzo",
+                    "nombre_en": "Quartz",
+                    "precio_cup": 500,
+                    "precio_usd": 1.00,
+                    "imagen": "img/cuarzo.jpg"
+                },
+                {
+                    "id": 9,
+                    "nombre_es": "Pulseras rojas",
+                    "nombre_en": "Red Bracelets",
+                    "precio_cup": 200,
+                    "precio_usd": 0.40,
+                    "imagen": "img/pulseras_rojas.jpg"
+                },
+                {
+                    "id": 10,
+                    "nombre_es": "Collar de perla",
+                    "nombre_en": "Pearl Necklace",
+                    "precio_cup": 800,
+                    "precio_usd": 1.60,
+                    "imagen": "img/collar_perla.jpg"
+                },
+                {
+                    "id": 11,
+                    "nombre_es": "Dúo de tobilleras",
+                    "nombre_en": "Anklets Duo",
+                    "precio_cup": 1200,
+                    "precio_usd": 2.90,
+                    "imagen": "img/tobilleras.jpg"
                 }
             ]
         }
