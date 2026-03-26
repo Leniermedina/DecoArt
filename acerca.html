@@ -7,7 +7,7 @@
     <link rel="icon" href="favicon.ico">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* Mismos estilos globales */
+        /* ========== ESTILOS GLOBALES ========== */
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
             font-family: Arial, sans-serif;
@@ -60,10 +60,19 @@
             width: 100%;
             z-index: 1000;
             transition: transform 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
         header.hide { transform: translateY(-100%); }
         nav { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; }
-        .nav-links a { color: var(--text-header); text-decoration: none; margin: 0 0.5rem; padding: 0.5rem; border-radius: 4px; transition: background 0.3s; }
+        .logo { font-size: 1.5rem; font-weight: bold; }
+        .nav-links a {
+            color: var(--text-header);
+            text-decoration: none;
+            margin: 0 0.5rem;
+            padding: 0.5rem;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
         .nav-links a:hover { background: #555; }
         .idioma button, .dark-mode-toggle {
             background: none;
@@ -81,7 +90,12 @@
             color: var(--bg-header);
         }
         .dark-mode-toggle { font-size: 1rem; }
-        main { padding: 2rem; max-width: 800px; margin: auto; margin-top: 80px; }
+        main {
+            padding: 2rem;
+            max-width: 800px;
+            margin: auto;
+            margin-top: 80px;
+        }
         .btn {
             display: inline-block;
             background: var(--btn-primary);
@@ -97,12 +111,41 @@
         .btn:hover { background: var(--btn-primary-hover); }
         .btn-danger { background: var(--btn-danger); }
         .btn-danger:hover { background: var(--btn-danger-hover); }
-        .floating-buttons { position: fixed; bottom: 20px; right: 20px; display: flex; flex-direction: column; gap: 10px; z-index: 1000; }
-        .floating-btn { width: 60px; height: 60px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 30px; box-shadow: var(--shadow); cursor: pointer; border: none; transition: transform 0.2s; }
+        .floating-buttons {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 1000;
+        }
+        .floating-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 30px;
+            box-shadow: var(--shadow);
+            cursor: pointer;
+            border: none;
+            transition: transform 0.2s;
+        }
         .floating-btn:hover { transform: scale(1.1); }
         .floating-btn.cart { background: #ff6600; color: white; }
         .floating-btn.whatsapp { background: #25D366; color: white; }
-        .floating-btn .cart-count { position: absolute; top: 0; right: 0; background: red; color: white; border-radius: 50%; padding: 2px 6px; font-size: 0.8rem; }
+        .floating-btn .cart-count {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: red;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 0.8rem;
+        }
         .cart-panel {
             position: fixed;
             top: 0;
@@ -127,8 +170,18 @@
             color: var(--text-header);
         }
         .cart-panel-header h2 { margin: 0; font-size: 1.2rem; }
-        .cart-panel-header .close-panel { background: none; border: none; color: var(--text-header); font-size: 2rem; cursor: pointer; }
-        .cart-panel-content { flex: 1; overflow-y: auto; padding: 1rem; }
+        .cart-panel-header .close-panel {
+            background: none;
+            border: none;
+            color: var(--text-header);
+            font-size: 2rem;
+            cursor: pointer;
+        }
+        .cart-panel-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem;
+        }
         .cart-item {
             display: flex;
             align-items: center;
@@ -136,17 +189,62 @@
             padding: 1rem 0;
             border-bottom: 1px solid var(--border-cart-item);
         }
-        .cart-item img { width: 50px; height: 50px; object-fit: cover; border-radius: 4px; }
+        .cart-item img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
         .cart-item-details { flex: 1; }
         .cart-item-details h4 { margin: 0 0 0.5rem; }
-        .cart-item-details .precio { font-weight: bold; color: var(--btn-primary); }
-        .cart-item-controls { display: flex; align-items: center; gap: 0.5rem; }
-        .cart-item-controls button { width: 30px; height: 30px; background: #ddd; border: none; border-radius: 4px; cursor: pointer; color: #333; }
-        .cart-item-controls span { min-width: 30px; text-align: center; }
-        .remove-item { background: var(--btn-danger); color: #fff; border: none; padding: 0.3rem 0.6rem; border-radius: 4px; cursor: pointer; }
-        .cart-total { font-size: 1.2rem; font-weight: bold; text-align: right; margin: 1rem 0; }
-        .cart-actions { display: flex; gap: 1rem; justify-content: flex-end; flex-wrap: wrap; }
-        .empty-cart { text-align: center; padding: 2rem; background: var(--bg-card); border-radius: 8px; }
+        .cart-item-details .precio {
+            font-weight: bold;
+            color: var(--btn-primary);
+        }
+        .cart-item-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .cart-item-controls button {
+            width: 30px;
+            height: 30px;
+            background: #ddd;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            color: #333;
+        }
+        .cart-item-controls span {
+            min-width: 30px;
+            text-align: center;
+        }
+        .remove-item {
+            background: var(--btn-danger);
+            color: #fff;
+            border: none;
+            padding: 0.3rem 0.6rem;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .cart-total {
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-align: right;
+            margin: 1rem 0;
+        }
+        .cart-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+        }
+        .empty-cart {
+            text-align: center;
+            padding: 2rem;
+            background: var(--bg-card);
+            border-radius: 8px;
+        }
         .modal {
             display: none;
             position: fixed;
@@ -177,7 +275,11 @@
             background: var(--bg-card);
             color: var(--text-primary);
         }
-        .modal-actions { display: flex; justify-content: flex-end; gap: 1rem; }
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+        }
         .close-modal { background: #ccc; color: #333; }
         .contact-info {
             background: var(--bg-card);
@@ -332,28 +434,34 @@
         function renderCartPanel() {
             const container = document.getElementById('cart-panel-content');
             const cart = getCart();
+
             if (cart.length === 0) {
                 container.innerHTML = `<div class="empty-cart"><p data-i18n="carritoVacio">${t('carritoVacio')}</p><a href="productos.html" class="btn" data-i18n="seguirComprando">${t('seguirComprando')}</a></div>`;
                 return;
             }
+
             fetch('productos.json')
                 .then(response => response.json())
                 .then(data => {
                     const productos = data.categorias.flatMap(cat => cat.productos);
                     let html = '';
-                    let totalGeneral = 0;
+                    let totalGeneralCUP = 0;
+                    let totalGeneralUSD = 0;
                     cart.forEach(item => {
                         const prod = productos.find(p => p.id === item.id);
                         if (!prod) return;
                         const nombreProd = currentLanguage === 'es' ? prod.nombre_es : prod.nombre_en;
-                        const subtotal = prod.precio * item.cantidad;
-                        totalGeneral += subtotal;
+                        const subtotalCUP = prod.precio_cup * item.cantidad;
+                        const subtotalUSD = prod.precio_usd * item.cantidad;
+                        totalGeneralCUP += subtotalCUP;
+                        totalGeneralUSD += subtotalUSD;
                         html += `
                             <div class="cart-item" data-id="${item.id}">
                                 <img src="${prod.imagen}" alt="${nombreProd}" onerror="this.src='img/placeholder.jpg'">
                                 <div class="cart-item-details">
                                     <h4>${nombreProd}</h4>
-                                    <p class="precio">${CONFIG.CURRENCY}${prod.precio.toFixed(2)}</p>
+                                    <p class="precio">CUP ${prod.precio_cup} / USD ${prod.precio_usd.toFixed(2)}</p>
+                                    <p class="precio">Subtotal: CUP ${subtotalCUP} / USD ${subtotalUSD.toFixed(2)}</p>
                                 </div>
                                 <div class="cart-item-controls">
                                     <button class="decrement-cart" data-id="${item.id}">-</button>
@@ -364,7 +472,7 @@
                             </div>
                         `;
                     });
-                    html += `<div class="cart-total">${t('total')}: ${CONFIG.CURRENCY}${totalGeneral.toFixed(2)}</div>`;
+                    html += `<div class="cart-total">${t('total')}:<br>CUP ${totalGeneralCUP}<br>USD ${totalGeneralUSD.toFixed(2)}</div>`;
                     html += `<div class="cart-actions">
                         <a href="productos.html" class="btn" data-i18n="seguirComprando">${t('seguirComprando')}</a>
                         <button class="btn btn-danger" id="vaciar-carrito-panel" data-i18n="vaciarCarrito">${t('vaciarCarrito')}</button>
@@ -435,19 +543,29 @@
                 const productos = data.categorias.flatMap(cat => cat.productos);
                 let mensajeWhatsApp = `Buenos días, quiero hacer este pedido:\nMi nombre es ${nombre} ${apellidos}.\nMi número es ${telefono}.\nMi dirección es ${direccion}.\n\nPedido:\n`;
                 const pedidoDetalle = [];
-                let total = 0;
+                let totalCUP = 0;
+                let totalUSD = 0;
                 cart.forEach(item => {
                     const prod = productos.find(p => p.id === item.id);
                     if (prod) {
                         const nombreProd = currentLanguage === 'es' ? prod.nombre_es : prod.nombre_en;
-                        const subtotal = prod.precio * item.cantidad;
-                        mensajeWhatsApp += `- ${item.cantidad} x ${nombreProd} (${CONFIG.CURRENCY}${subtotal.toFixed(2)})\n`;
-                        total += subtotal;
-                        pedidoDetalle.push({ cantidad: item.cantidad, nombre: nombreProd, precio: `${CONFIG.CURRENCY}${prod.precio.toFixed(2)}`, subtotal: `${CONFIG.CURRENCY}${subtotal.toFixed(2)}` });
+                        const subtotalCUP = prod.precio_cup * item.cantidad;
+                        const subtotalUSD = prod.precio_usd * item.cantidad;
+                        mensajeWhatsApp += `- ${item.cantidad} x ${nombreProd} (CUP ${prod.precio_cup} c/u / USD ${prod.precio_usd.toFixed(2)} c/u) → Subtotal: CUP ${subtotalCUP} / USD ${subtotalUSD.toFixed(2)}\n`;
+                        totalCUP += subtotalCUP;
+                        totalUSD += subtotalUSD;
+                        pedidoDetalle.push({
+                            cantidad: item.cantidad,
+                            nombre: nombreProd,
+                            precio_cup: prod.precio_cup,
+                            precio_usd: prod.precio_usd.toFixed(2),
+                            subtotal_cup: subtotalCUP,
+                            subtotal_usd: subtotalUSD.toFixed(2)
+                        });
                     }
                 });
-                mensajeWhatsApp += `Total: ${CONFIG.CURRENCY}${total.toFixed(2)}`;
-                const totalFormateado = `${CONFIG.CURRENCY}${total.toFixed(2)}`;
+                mensajeWhatsApp += `Total: CUP ${totalCUP} / USD ${totalUSD.toFixed(2)}`;
+                const totalFormateado = `CUP ${totalCUP} / USD ${totalUSD.toFixed(2)}`;
                 window.open(`https://wa.me/${CONFIG.WHATSAPP_NUMBER}?text=${encodeURIComponent(mensajeWhatsApp)}`, '_blank');
                 const backendUrl = 'https://decoart.onrender.com/api/crear-gist-pedido';
                 const resBackend = await fetch(backendUrl, {
