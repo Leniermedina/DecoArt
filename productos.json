@@ -1,42 +1,64 @@
 {
     "categorias": [
         {
-            "nombre_es": "Electrónica",
-            "nombre_en": "Electronics",
+            "nombre_es": "Bisutería",
+            "nombre_en": "Costume Jewelry",
             "productos": [
                 {
                     "id": 1,
-                    "nombre_es": "Auriculares Bluetooth",
-                    "nombre_en": "Bluetooth Headphones",
-                    "precio": 29.99,
-                    "imagen": "img/auriculares.jpg"
+                    "nombre_es": "Kit de 5 pulseras Ying Yang",
+                    "nombre_en": "5-piece Ying Yang Bracelets Set",
+                    "precio_cup": 1500,
+                    "precio_usd": 2.92,
+                    "imagen": "img/pulseras_yingyang.jpg"
                 },
                 {
                     "id": 2,
-                    "nombre_es": "Cargador Portátil",
-                    "nombre_en": "Power Bank",
-                    "precio": 19.99,
-                    "imagen": "img/cargador.jpg"
-                }
-            ]
-        },
-        {
-            "nombre_es": "Hogar",
-            "nombre_en": "Home",
-            "productos": [
+                    "nombre_es": "Kit de 5 pulseras Mano de Fátima",
+                    "nombre_en": "5-piece Fatima Hand Bracelets Set",
+                    "precio_cup": 1500,
+                    "precio_usd": 2.92,
+                    "imagen": "img/pulseras_fatima.jpg"
+                },
                 {
                     "id": 3,
-                    "nombre_es": "Lámpara LED",
-                    "nombre_en": "LED Lamp",
-                    "precio": 15.50,
-                    "imagen": "img/lampara.jpg"
+                    "nombre_es": "Kit de 5 pulseras marinas",
+                    "nombre_en": "5-piece Marine Bracelets Set",
+                    "precio_cup": 1500,
+                    "precio_usd": 2.92,
+                    "imagen": "img/pulseras_marinas.jpg"
                 },
                 {
                     "id": 4,
-                    "nombre_es": "Set de Ollas",
-                    "nombre_en": "Pot Set",
-                    "precio": 45.00,
-                    "imagen": "img/ollas.jpg"
+                    "nombre_es": "Dúo de colgantes de madera marino",
+                    "nombre_en": "Marine Wooden Pendants Duo",
+                    "precio_cup": 1500,
+                    "precio_usd": 3.00,
+                    "imagen": "img/colgantes_madera.jpg"
+                },
+                {
+                    "id": 5,
+                    "nombre_es": "Kit de 5 pulseras ojitos turcos",
+                    "nombre_en": "5-piece Evil Eye Bracelets Set",
+                    "precio_cup": 1500,
+                    "precio_usd": 2.90,
+                    "imagen": "img/pulseras_ojitos.jpg"
+                },
+                {
+                    "id": 6,
+                    "nombre_es": "Tres llaveros atrapasueños (color aleatorio)",
+                    "nombre_en": "3 Dreamcatcher Keychains (random color)",
+                    "precio_cup": 1800,
+                    "precio_usd": 3.51,
+                    "imagen": "img/llaveros_atrapasuenos.jpg"
+                },
+                {
+                    "id": 7,
+                    "nombre_es": "Collar playero",
+                    "nombre_en": "Beach Necklace",
+                    "precio_cup": 1000,
+                    "precio_usd": 2.00,
+                    "imagen": "img/collar_playero.jpg"
                 }
             ]
         }
