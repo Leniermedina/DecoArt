@@ -231,29 +231,20 @@
         .modal-actions { display: flex; justify-content: flex-end; gap: 1rem; }
         .close-modal { background: #95a5a6; }
         .close-modal:hover { background: #7f8c8d; }
-        .hero {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: #fff;
-            padding: 3rem 2rem;
-            text-align: center;
-            border-radius: 10px;
-            margin-bottom: 2rem;
-        }
-        /* Cambio de color del párrafo a naranja */
-        .hero p {
-            color: #ff6600;
-        }
-        .hero h1 { font-size: 2.5rem; margin-bottom: 1rem; }
-        .hero p { font-size: 1.2rem; margin-bottom: 2rem; }
-        .hero .btn { background: #fff; color: #667eea; }
-        .hero .btn:hover { background: #f0f0f0; }
 
-        /* ========== ESTILOS DEL SLIDER ========== */
+        /* ========== SECCIÓN HERO: SOLO SLIDER ========== */
+        .hero {
+            width: 100%;
+            background: transparent; /* sin fondo adicional */
+            margin-bottom: 2rem;
+            padding: 0; /* eliminamos padding interno */
+        }
+        /* Contenedor del slider */
         .hero-slider {
-            margin-top: 2rem;
             position: relative;
+            width: 100%;
             overflow: hidden;
-            border-radius: 10px;
+            border-radius: 0; /* sin bordes redondeados, ocupa todo el ancho */
         }
         .slider-container {
             position: relative;
@@ -269,10 +260,9 @@
         }
         .slide img {
             width: 100%;
-            height: 300px;
+            height: 500px; /* altura fija en escritorio */
             object-fit: cover;
             display: block;
-            border-radius: 10px;
         }
         .slider-dots {
             text-align: center;
@@ -297,11 +287,10 @@
         }
         @media (max-width: 600px) {
             .slide img {
-                height: 200px;
+                height: 300px; /* altura reducida en móvil */
             }
-            .hero h1 { font-size: 1.8rem; }
         }
-        /* Fin estilos slider */
+        /* Fin estilos hero slider */
 
         .mensajes-motivadores {
             display: flex;
@@ -372,7 +361,6 @@
             .nav-links { display: flex; flex-wrap: wrap; justify-content: center; }
             main { padding: 1rem; padding-top: 120px; } /* más espacio en móvil */
             .cart-panel { max-width: 100%; }
-            .hero h1 { font-size: 1.8rem; }
         }
     </style>
 </head>
@@ -395,12 +383,8 @@
     </header>
 
     <main>
+        <!-- SECCIÓN HERO: SOLO SLIDER, SIN TEXTO -->
         <section class="hero">
-            <h1 data-i18n="welcome">Bienvenido a DecoArt</h1>
-            <p data-i18n="welcomeText">Transformamos tus espacios con estilo y calidad.</p>
-            <a href="productos.html" class="btn" data-i18n="verProductos">Ver productos</a>
-
-            <!-- SLIDER DE 3 FOTOS CON RUTAS LOCALES -->
             <div class="hero-slider">
                 <div class="slider-container">
                     <div class="slider" id="slider">
@@ -417,7 +401,6 @@
                     <div class="slider-dots" id="slider-dots"></div>
                 </div>
             </div>
-            <!-- FIN SLIDER -->
         </section>
 
         <section class="mensajes-motivadores">
